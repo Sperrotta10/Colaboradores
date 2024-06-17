@@ -4,10 +4,10 @@ import json
 
 # Clase de los proyectos
 class Proyectos:
-    def __init__ (self, id, nombre, descripción, fecha_de_inicio,fecha_de_vencimiento, estado_actual, empresa, gerente, equipo):
+    def __init__ (self, id, nombre, descripcion, fecha_de_inicio,fecha_de_vencimiento, estado_actual, empresa, gerente, equipo):
         self.id = id
         self.nombre = nombre 
-        self.descripcion = descripción
+        self.descripcion = descripcion
         self.fecha_de_inicio = fecha_de_inicio
         self.fecha_de_vencimiento = fecha_de_vencimiento
         self.estado_actual = estado_actual
@@ -22,11 +22,11 @@ class Proyectos:
 
 # Clase de las tareas de los proyectos
 class Tareas:
-    def __init__ (self,id, nombre,cliente,descripción, fecha_de_inicio, fecha_de_vencimiento,estado_actual,porcentaje):
+    def __init__ (self,id, nombre,cliente,descripcion, fecha_de_inicio, fecha_de_vencimiento,estado_actual,porcentaje):
         self.id = id
         self.nombre = nombre
         self.cliente = cliente
-        self.descripción = descripción
+        self.descripcion = descripcion
         self.fecha_de_inicio = fecha_de_inicio
         self.fecha_de_vencimiento = fecha_de_vencimiento
         self.estado_actual = estado_actual
@@ -65,177 +65,194 @@ class Gestion_proyectos:
             opc = int(input("Escoje la opcion que desea ejecutar: "))
 
             if opc == 1:
-
-                pregunta = input("Desea ingresar los datos manualmente o de forma automatica? (M/A)")
-
-                if pregunta.lower() == "m":
-
-
-                    cant_proyectos = int(input("Cuantos proyectos deseas crear: "))
-
-                    for i in range(cant_proyectos):
-                    
-                        # pedimos el ingreso de datos de forma manual
-                        id = int(input("Indique el id del proyecto: "))
-                        nombre = input("Indique el nombre del proyecto: ")
-                        descripción = input("Indique los detalles del proyecto: ")
-                        dia1 = int(input("Introduce el día de inicio del proyecto: "))
-                        mes1 = int(input("Introduce el mes de inicio del proyecto: "))
-                        anio1 = int(input("Introduce el año de inicio del proyecto: "))
-                        fecha_de_inicio = datetime(anio1, mes1, dia1)
-                        dia2 = int(input("Introduce el día de vencimiento del proyecto: "))
-                        mes2 = int(input("Introduce el mes de vencimiento del proyecto: "))
-                        anio2 = int(input("Introduce el año de vencimiento del proyecto: "))
-                        fecha_de_vencimiento = datetime(anio2, mes2, dia2)
-                        estado_actual = input("Estado actual del proyecto: ")
-                        empresa = input("Nombre de la empresa del proyecto: ")
-                        gerente = input("Gerente del proyecto: ")
-                        cantidad = int(input("numero de integrantes del equipo: "))
-                        equipo = []
-
-                        for i in range(cantidad):
-                            integrante = input("Escribe el " + str(i+1) + " integrante del equipo: ")
-                            equipo.append(integrante)
-
-                        # creamos un objeto de tipo proyecto
-                        proyecto = Proyectos(id,nombre,descripción,fecha_de_inicio,fecha_de_vencimiento,estado_actual,empresa,gerente,equipo)
-                        # agregar proyecto a la lista de proyectos
-                        self.lista_proyectos.append(proyecto)
-
-                    print("\nProyectos Creados")
-
-                else:
-                    
-                    # ingresar los datos de forma automatica de un archivo .json
-                    with open("datos_prueba1.json", "r") as archivo:
-                        datos = json.load(archivo)
-                        for proyecto_data in datos["proyectos"]:
-                            proyecto = Proyectos(
-                                proyecto_data["identificador"],
-                                proyecto_data["titulo"],
-                                proyecto_data["detalles"],
-                                datetime.strptime(proyecto_data["inicio"], "%Y-%m-%d"),
-                                datetime.strptime(proyecto_data["vencimiento"], "%Y-%m-%d"),
-                                proyecto_data["condicion"],
-                                proyecto_data["organizacion"],
-                                proyecto_data["responsable"],
-                                proyecto_data["grupo"]
-                            )
-                            self.lista_proyectos.append(proyecto)
-
-                    print("\nProyectos Creados")
+                self.crear_proyecto()
                 
             elif opc == 2:
-
-                if len(self.lista_proyectos) == 0:
-                    print("No hay proyectos disponibles para modificar")
-                else:
-                    pedir_id = int(input("Ingresar el id del proyecto que desea modificar: "))
-                    bandera = False # esta bandera es para verificar si el id de ese proyecto existe
-
-                    for i in self.lista_proyectos:
-                        if i.id == pedir_id:
-                        
-                            # ingreso de datos para modificar el proyecto
-                            i.id = int(input("Indique el id del proyecto: "))
-                            i.nombre = input("Indique el nombre del proyecto: ")
-                            i.descripción = input("Indique los detalles del proyecto: ")
-                            dia1 = int(input("Introduce el día de inicio del proyecto: "))
-                            mes1 = int(input("Introduce el mes de inicio del proyecto: "))
-                            anio1 = int(input("Introduce el año de inicio del proyecto: "))
-                            i.fecha_de_inicio = datetime(anio1, mes1, dia1)
-                            dia2 = int(input("Introduce el día de vencimiento del proyecto: "))
-                            mes2 = int(input("Introduce el mes de vencimiento del proyecto: "))
-                            anio2 = int(input("Introduce el año de vencimiento del proyecto: "))
-                            i.fecha_de_vencimiento = datetime(anio2, mes2, dia2)
-                            i.estado_actual = input("Estado actual del proyecto: ")
-                            i.empresa = input("Nombre de la empresa del proyecto: ")
-                            i.gerente = input("Gerente del proyecto: ")
-                            i.cantidad = int(input("numero de integrantes del equipo: "))
-                            equipo = []
-
-                            for i in range(cantidad):
-                                integrante = input("Escribe el " + str(i+1) + " integrante del equipo: ")
-                                equipo.append(integrante)
-
-                            i.equipo
-                            bandera = True
-
-                    # condicion para indicar que no existe ese proyecto que seleccione el usuario
-                    if bandera is not True:
-                        print("Ese proyecto no existe por lo tanto no se puede modificar")
-                    else:
-                        print("\nProyecto Modificado")
+                self.modificar_proyecto()
 
             elif opc == 3:
-                
-                if len(self.lista_proyectos) == 0:
-                    print("No hay proyectos para consultar")
-                else:
-                    pedir_id = int(input("Ingresar el id del proyecto que desea consultar: "))
-                    bandera = False # esta bandera es para verificar si el id de ese proyecto existe
-
-                    for i in self.lista_proyectos:
-                        if i.id == pedir_id:
-                            print("id del proyecto: " + str(i.id))
-                            print("nombre del proyecto: " + str(i.nombre))
-                            print("descripcion del proyecto: " + str(i.descripcion))
-                            print("fecha de inicio del proyecto: " + str(i.fecha_de_inicio))
-                            print("fecha de vencimiento del proyecto: " + str(i.fecha_de_vencimiento))
-                            print("estado actual del proyecto: " + str(i.estado_actual))
-                            print("empresa del proyecto: " + str(i.empresa))
-                            print("gerente del proyecto: " + str(i.gerente))
-                            print("equipo del proyecto: " + str(i.equipo))
-                            bandera = True
-
-                    # condicion para indicar que no existe ese proyecto que seleccione el usuario
-                    if bandera is not True:
-                        print("Ese proyecto no existe por lo tanto no se puede consultar")
-                    else:
-                        print("Proyecto Consultado")
-
+                self.consultar_proyectos()
 
             elif opc == 4:
-                
-                if len(self.lista_proyectos) == 0:
-                    print("No hay proyectos para eliminar")
-                else:
-
-                    pedir_id = int(input("Ingresar el id del proyecto que desea eliminar: "))
-                    bandera = False # esta bandera es para verificar si el id de ese proyecto existe
-
-                    for i in self.lista_proyectos:
-                        if i.id == pedir_id:
-                            self.lista_proyectos.remove(i)
-                            bandera = True
-
-                    if bandera is not True:
-                        print("Ese proyecto no existe por lo tanto no se puede eliminar")
-                    else:
-                        print("Proyecto Eliminado")
+                self.eliminar_proyecto()
 
             elif opc == 5:
-                
-                if len(self.lista_proyectos) == 0:
-                    print("No hay proyectos para listar")
-                else:
-
-                    for i in self.lista_proyectos:
-                        print("id del proyecto: " + str(i.id))
-                        print("nombre del proyecto: " + str(i.nombre))
-                        print("descripcion del proyecto: " + str(i.descripcion))
-                        print("fecha de inicio del proyecto: " + str(i.fecha_de_inicio))
-                        print("fecha de vencimiento del proyecto: " + str(i.fecha_de_vencimiento))
-                        print("estado actual del proyecto: " + str(i.estado_actual))
-                        print("empresa del proyecto: " + str(i.empresa))
-                        print("gerente del proyecto: " + str(i.gerente))
-                        print("equipo del proyecto: " + str(i.equipo))
-                        print("")
+                self.listar_proyectos()
 
             elif opc == 6:
                 break
 
+    def crear_proyecto(self):
+        pregunta = input("Desea ingresar los datos manualmente o de forma automatica? (M/A)")
 
+        if pregunta.lower() == "m":
+
+
+            cant_proyectos = int(input("Cuantos proyectos deseas crear: "))
+
+            for i in range(cant_proyectos):
+            
+                # pedimos el ingreso de datos de forma manual
+                id = int(input("Indique el id del proyecto: "))
+                nombre = input("Indique el nombre del proyecto: ")
+                descripcion = input("Indique los detalles del proyecto: ")
+                dia1 = int(input("Introduce el día de inicio del proyecto: "))
+                mes1 = int(input("Introduce el mes de inicio del proyecto: "))
+                anio1 = int(input("Introduce el año de inicio del proyecto: "))
+                fecha_de_inicio = datetime(anio1, mes1, dia1)
+                dia2 = int(input("Introduce el día de vencimiento del proyecto: "))
+                mes2 = int(input("Introduce el mes de vencimiento del proyecto: "))
+                anio2 = int(input("Introduce el año de vencimiento del proyecto: "))
+                fecha_de_vencimiento = datetime(anio2, mes2, dia2)
+                estado_actual = input("Estado actual del proyecto: ")
+                empresa = input("Nombre de la empresa del proyecto: ")
+                gerente = input("Gerente del proyecto: ")
+                cantidad = int(input("numero de integrantes del equipo: "))
+                equipo = []
+
+                for i in range(cantidad):
+                    integrante = input("Escribe el " + str(i+1) + " integrante del equipo: ")
+                    equipo.append(integrante)
+
+                # creamos un objeto de tipo proyecto
+                proyecto = Proyectos(id,nombre,descripcion,fecha_de_inicio,fecha_de_vencimiento,estado_actual,empresa,gerente,equipo)
+                # agregar proyecto a la lista de proyectos
+                self.lista_proyectos.append(proyecto)
+
+            print("\nProyectos Creados")
+
+        else:
+            
+            # ingresar los datos de forma automatica de un archivo .json
+            with open("datos_prueba1.json", "r") as archivo:
+                datos = json.load(archivo)
+                for proyecto_data in datos["proyectos"]:
+                    proyecto = Proyectos(
+                        proyecto_data["identificador"],
+                        proyecto_data["titulo"],
+                        proyecto_data["detalles"],
+                        datetime.strptime(proyecto_data["inicio"], "%Y-%m-%d"),
+                        datetime.strptime(proyecto_data["vencimiento"], "%Y-%m-%d"),
+                        proyecto_data["condicion"],
+                        proyecto_data["organizacion"],
+                        proyecto_data["responsable"],
+                        proyecto_data["grupo"]
+                    )
+                    self.lista_proyectos.append(proyecto)
+
+            print("\nProyectos Creados")
+        
+        self.menu_opciones()
+
+    def modificar_proyecto(self):
+        if len(self.lista_proyectos) == 0:
+            print("No hay proyectos disponibles para modificar")
+        else:
+            pedir_id = int(input("Ingresar el id del proyecto que desea modificar: "))
+            bandera = False # esta bandera es para verificar si el id de ese proyecto existe
+
+            for i in self.lista_proyectos:
+                if i.id == pedir_id:
+                
+                    # ingreso de datos para modificar el proyecto
+                    i.id = int(input("Indique el id del proyecto: "))
+                    i.nombre = input("Indique el nombre del proyecto: ")
+                    i.descripcion = input("Indique los detalles del proyecto: ")
+                    dia1 = int(input("Introduce el día de inicio del proyecto: "))
+                    mes1 = int(input("Introduce el mes de inicio del proyecto: "))
+                    anio1 = int(input("Introduce el año de inicio del proyecto: "))
+                    i.fecha_de_inicio = datetime(anio1, mes1, dia1)
+                    dia2 = int(input("Introduce el día de vencimiento del proyecto: "))
+                    mes2 = int(input("Introduce el mes de vencimiento del proyecto: "))
+                    anio2 = int(input("Introduce el año de vencimiento del proyecto: "))
+                    i.fecha_de_vencimiento = datetime(anio2, mes2, dia2)
+                    i.estado_actual = input("Estado actual del proyecto: ")
+                    i.empresa = input("Nombre de la empresa del proyecto: ")
+                    i.gerente = input("Gerente del proyecto: ")
+                    cantidad = int(input("numero de integrantes del equipo: "))
+                    equipo = []
+
+                    for i in range(cantidad):
+                        integrante = input("Escribe el " + str(i+1) + " integrante del equipo: ")
+                        equipo.append(integrante)
+
+                    i.equipo = equipo
+                    bandera = True
+
+            # condicion para indicar que no existe ese proyecto que seleccione el usuario
+            if bandera is not True:
+                print("Ese proyecto no existe por lo tanto no se puede modificar")
+            else:
+                print("\nProyecto Modificado")
+        
+        self.menu_opciones()
+    
+    def consultar_proyectos(self):
+        if len(self.lista_proyectos) == 0:
+            print("No hay proyectos para consultar")
+        else:
+            pedir_id = int(input("Ingresar el id del proyecto que desea consultar: "))
+            bandera = False # esta bandera es para verificar si el id de ese proyecto existe
+
+            for i in self.lista_proyectos:
+                if i.id == pedir_id:
+                    print("id del proyecto: " + str(i.id))
+                    print("nombre del proyecto: " + str(i.nombre))
+                    print("descripcion del proyecto: " + str(i.descripcion))
+                    print("fecha de inicio del proyecto: " + str(i.fecha_de_inicio))
+                    print("fecha de vencimiento del proyecto: " + str(i.fecha_de_vencimiento))
+                    print("estado actual del proyecto: " + str(i.estado_actual))
+                    print("empresa del proyecto: " + str(i.empresa))
+                    print("gerente del proyecto: " + str(i.gerente))
+                    print("equipo del proyecto: " + str(i.equipo))
+                    bandera = True
+
+            # condicion para indicar que no existe ese proyecto que seleccione el usuario
+            if bandera is not True:
+                print("Ese proyecto no existe por lo tanto no se puede consultar")
+            else:
+                print("Proyecto Consultado")
+
+        self.menu_opciones()
+
+    def eliminar_proyecto(self):
+        if len(self.lista_proyectos) == 0:
+            print("No hay proyectos para eliminar")
+        else:
+
+            pedir_id = int(input("Ingresar el id del proyecto que desea eliminar: "))
+            bandera = False # esta bandera es para verificar si el id de ese proyecto existe
+
+            for i in self.lista_proyectos:
+                if i.id == pedir_id:
+                    self.lista_proyectos.remove(i)
+                    bandera = True
+
+            if bandera is not True:
+                print("Ese proyecto no existe por lo tanto no se puede eliminar")
+            else:
+                print("Proyecto Eliminado")
+        
+        self.menu_opciones()
+
+    def listar_proyectos(self):
+        if len(self.lista_proyectos) == 0:
+                    print("No hay proyectos para listar")
+        else:
+
+            for i in self.lista_proyectos:
+                print("id del proyecto: " + str(i.id))
+                print("nombre del proyecto: " + str(i.nombre))
+                print("descripcion del proyecto: " + str(i.descripcion))
+                print("fecha de inicio del proyecto: " + str(i.fecha_de_inicio))
+                print("fecha de vencimiento del proyecto: " + str(i.fecha_de_vencimiento))
+                print("estado actual del proyecto: " + str(i.estado_actual))
+                print("empresa del proyecto: " + str(i.empresa))
+                print("gerente del proyecto: " + str(i.gerente))
+                print("equipo del proyecto: " + str(i.equipo))
+                print("")
+        
+        self.menu_opciones()
 
 # segundo modulo
 class Gestion_Tareas_prioridades:
