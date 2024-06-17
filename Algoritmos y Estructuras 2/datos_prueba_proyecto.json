@@ -1,0 +1,151 @@
+{
+    "proyectos": [
+      {
+        "identificador": 1,
+        "titulo": "Proyecto Alpha",
+        "detalles": "Descripción del Proyecto Alpha",
+        "inicio": "2023-01-01",
+        "vencimiento": "2023-12-31",
+        "condicion": "En progreso",
+        "organizacion": "Empresa A",
+        "responsable": "Gerente A",
+        "grupo": ["Miembro1", "Miembro2"],
+        "tareas": [
+          {
+            "identificador": 101,
+            "titulo": "Tarea 1",
+            "cliente": "Cliente 1",
+            "detalles": "Descripción de la Tarea 1",
+            "inicio": "2023-01-15",
+            "vencimiento": "2023-02-15",
+            "condicion": "Pendiente",
+            "avance": 20,
+            "subtareas": [
+              {
+                "identificador": 1001,
+                "titulo": "Subtarea 1",
+                "detalles": "Descripción de la Subtarea 1",
+                "condicion": "En progreso"
+              },
+              {
+                "identificador": 1001,
+                "titulo": "Subtarea 1.1",
+                "detalles": "Descripción de la Subtarea 1.1",
+                "condicion": "En progreso"
+              }
+            ]
+          },
+          {
+            "identificador": 102,
+            "titulo": "Tarea 2",
+            "cliente": "Cliente 2",
+            "detalles": "Descripción de la Tarea 2",
+            "inicio": "2023-03-01",
+            "vencimiento": "2023-04-01",
+            "condicion": "Completada",
+            "avance": 100,
+            "subtareas": [
+              {
+                "identificador": 1002,
+                "titulo": "Subtarea 3",
+                "detalles": "Descripción de la Subtarea 3",
+                "condicion": "Pendiente"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "identificador": 2,
+        "titulo": "Proyecto Beta",
+        "detalles": "Descripción del Proyecto Beta",
+        "inicio": "2023-02-01",
+        "vencimiento": "2023-11-30",
+        "condicion": "En progreso",
+        "organizacion": "Empresa B",
+        "responsable": "Gerente B",
+        "grupo": ["Miembro3", "Miembro4"],
+        "tareas": [
+          {
+            "identificador": 201,
+            "titulo": "Tarea 3",
+            "cliente": "Cliente 3",
+            "detalles": "Descripción de la Tarea 3",
+            "inicio": "2023-02-15",
+            "vencimiento": "2023-03-15",
+            "condicion": "En progreso",
+            "avance": 50,
+            "subtareas": [
+              {
+                "identificador": 2000,
+                "titulo": "Subtarea 1",
+                "detalles": "Descripción de la Subtarea 1",
+                "condicion": "En progreso"
+              }
+            ]
+          },
+          {
+            "identificador": 202,
+            "titulo": "Tarea 4",
+            "cliente": "Cliente 4",
+            "detalles": "Descripción de la Tarea 4",
+            "inicio": "2023-04-01",
+            "vencimiento": "2023-05-01",
+            "condicion": "Pendiente",
+            "avance": 30,
+            "subtareas": [
+              {
+                "identificador": 2001,
+                "titulo": "Subtarea 2",
+                "detalles": "Descripción de la Subtarea 2",
+                "condicion": "Pendiente"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "identificador": 3,
+        "titulo": "Proyecto Gamma",
+        "detalles": "Descripción del Proyecto Gamma",
+        "inicio": "2023-03-01",
+        "vencimiento": "2023-10-31",
+        "condicion": "Completado",
+        "organizacion": "Empresa A",
+        "responsable": "Gerente C",
+        "grupo": ["Miembro1", "Miembro3"],
+        "tareas": [
+          {
+            "identificador": 301,
+            "titulo": "Tarea 5",
+            "cliente": "Cliente 5",
+            "detalles": "Descripción de la Tarea 5",
+            "inicio": "2023-03-15",
+            "vencimiento": "2023-04-15",
+            "condicion": "Completada",
+            "avance": 100,
+            "subtareas": []
+          },
+          {
+            "identificador": 302,
+            "titulo": "Tarea 6",
+            "cliente": "Cliente 6",
+            "detalles": "Descripción de la Tarea 6",
+            "inicio": "2023-05-01",
+            "vencimiento": "2023-06-01",
+            "condicion": "En progreso",
+            "avance": 75,
+            "subtareas": [
+              {
+                "identificador": 3001,
+                "titulo": "Subtarea 3",
+                "detalles": "Descripción de la Subtarea 3",
+                "condicion": "En progreso"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
