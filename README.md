@@ -1,4 +1,4 @@
-# Colaboradores Práctica Julia
+# Colaboradores 
 ### Integrantes:
 * Jesús Araujo C.I: 31.200.562
 * Lai Chang C.I: 30.335.078
