@@ -157,7 +157,7 @@ class Gestion_proyectos:
         self.archivo = archivo
         self.menu_opciones()
     
-    
+
     def menu_opciones(self):
 
         while True:
@@ -605,42 +605,159 @@ class Reportes:
     
     def __init__ (self,lista_proyectos):
         self.lista_proyectos = lista_proyectos
+        self.menu_opciones()
 
     def menu_opciones(self):
         while True:
 
             print("\nMenu de Opciones")
-            print("1- Agregar nueva tarea")
-            print("2- Insertar tarea")
-            print("3- Eliminar tarea")
-            print("4- Buscar tarea")
-            print("5- Actualizar tareas")
-            print("6- Salir del Menu\n")
+            print("1- Consulta de Tareas por Estado")
+            print("2- Filtrado por Fecha")
+            print("3- Filtrado de proyectos")
+            print("4- Listar sub tareas")
+            print("5- Salir")
             opc = int(input("Escoje la opcion que desea ejecutar: "))
 
             if opc == 1:
-                self.agregar_tareas_al_final()
+                self.consultar_tareas()
                 
             elif opc == 2:
-                self.insertar_tareas_posicion()
+                self.filtrado_fecha()
 
             elif opc == 3:
-                self.eliminar_tareas()
+                self.filtrado_proyectos()
 
             elif opc == 4:
-                self.buscar_Tareas()
-
-            elif opc == 5:
-                self.actualizar_tareas()
+                self.listar_subtareas()
 
             else:
                 break
 
+    def consultar_tareas(self):
 
-archivo = Archivo()
-lista_de_los_proyectos = archivo.cargar_datos_desde_json()
-modulo1 = Gestion_proyectos(archivo,lista_de_los_proyectos)
-lista_de_los_proyectos = modulo1.lista_proyectos
+        lista_tareas_por_estado = []
+
+        estado = input("Indique el estado de la tarea que desea consultar: ")
+
+        for i in self.lista_proyectos:
+            for j in i.tareas:
+                if j.estado_actual == estado.capitalize():
+                    lista_tareas_por_estado.append(j)
+
+
+        if len(lista_tareas_por_estado) != 0:
+
+            for j in lista_tareas_por_estado:
+                print("Id de la Tarea" + str(j.id))
+                print("Titulo de la Tarea" + str(j.nombre))
+                print("Cliente de la Tarea" + str(j.cliente))
+                print("Detalles de la Tarea" + str(j.descripcion))
+                print("Inicio de la Tarea" + str(j.fecha_de_inicio))
+                print("Vencimiento de la Tarea" + str(j.fecha_de_vencimiento))
+                print("condicion de la Tarea" + str(j.estado_actual))
+                print("Avance de la Tarea" + str(j.porcentaje))
+
+        else:
+            print("No se puede consultar tareas por estado porque no existe ninguna tarea con el estado que seleccion el usuario")
+
+
+    def filtrado_fecha(self):
+
+        filtrar_tareas = []
+        fecha = input("Desea filtar fechas por incio o vencimiento? (I/V): ")
+
+        # filtramos tareas por fecha de inicio
+        if fecha.lower() == "i":
+
+            # ingresamos datos de la fecha de inicio
+            dia1 = int(input("Introduce el día de inicio de la tarea: "))
+            mes1 = int(input("Introduce el mes de inicio de la tarea: "))
+            anio1 = int(input("Introduce el año de inicio de la tarea: "))
+
+            fecha_de_inicio = datetime(anio1, mes1, dia1)
+
+            # le pedimos al usuario que indique si quiere buscar antes o despues de la fecha que selecciono
+            encontrar = input("Desea encontrar una tarea antes o despues de esa fecha seleccionada? (A/D): ")
+
+            # filtramos tareas antes de la fecha que selecciono el usuario
+            if encontrar.lower() == "a":
+
+                for i in self.lista_proyectos:
+                    for j in i.tareas:
+                        if j.fecha_de_inicio < fecha_de_inicio:
+                            filtrar_tareas.append(j)
+
+            # filtramos tareas despues de la fecha que selecciono el usuario
+            elif encontrar.lower() == "d":
+
+                for i in self.lista_proyectos:
+                    for j in i.tareas:
+                        if j.fecha_de_inicio > fecha_de_inicio:
+                            filtrar_tareas.append(j)
+
+
+        # filtramos tareas por fecha de vencimiento
+        elif fecha.lower() == "v":
+
+             # ingresamos datos de la fecha de vencimiento
+            dia1 = int(input("Introduce el día de vencimiento de la tarea: "))
+            mes1 = int(input("Introduce el mes de vencimiento de la tarea: "))
+            anio1 = int(input("Introduce el año de vencimiento de la tarea: "))
+
+            fecha_de_vencimiento = datetime(anio1, mes1, dia1)
+
+            # le pedimos al usuario que indique si quiere buscar antes o despues de la fecha que selecciono
+            encontrar = input("Desea encontrar una tarea antes o despues de esa fecha seleccionada? (A/D): ")
+
+            # filtramos tareas antes de la fecha que selecciono el usuario
+            if encontrar.lower() == "a":
+
+                for i in self.lista_proyectos:
+                    for j in i.tareas:
+                        if j.fecha_de_vencimiento < fecha_de_vencimiento:
+                            filtrar_tareas.append(j)
+
+            # filtramos tareas despues de la fecha que selecciono el usuario
+            elif encontrar.lower() == "d":
+
+                for i in self.lista_proyectos:
+                    for j in i.tareas:
+                        if j.fecha_de_vencimiento > fecha_de_vencimiento:
+                            filtrar_tareas.append(j)
+
+
+        if len(filtrar_tareas) != 0:
+
+            for i in filtrar_tareas:
+                print("Id de la Tarea" + str(j.id))
+                print("Titulo de la Tarea" + str(j.nombre))
+                print("Cliente de la Tarea" + str(j.cliente))
+                print("Detalles de la Tarea" + str(j.descripcion))
+                print("Inicio de la Tarea" + str(j.fecha_de_inicio))
+                print("Vencimiento de la Tarea" + str(j.fecha_de_vencimiento))
+                print("condicion de la Tarea" + str(j.estado_actual))
+                print("Avance de la Tarea" + str(j.porcentaje))
+
+        else:
+            print("No se puede filtrar ninguna tarea por fecha porque el rango de la fechas seleccionadas por el usuario no existe")
+
+
+
+
+
+# con esto hay que hacer un menu que maneje todo las interacciones del programa
+# asi que esto es para probar el funcionamiento del programa
+
+archivo = Archivo()  # modulo de importacion y exportacion
+lista_de_los_proyectos = archivo.cargar_datos_desde_json() # obtenemos el vector con los proyectos
+
+modulo1 = Gestion_proyectos(archivo,lista_de_los_proyectos)  # modulo de gestion de proyectos
+lista_de_los_proyectos = modulo1.lista_proyectos  # obtenemos el vector con los nuevos proyectos o el mismo vector de proyectos
+
+modulo2 = Gestion_Tareas_prioridades(lista_de_los_proyectos,archivo) # modulo de gestion de tareas y prioridad
+lista_de_los_proyectos = modulo2.lista_proyectos # obtenemos el vector con los nuevas tareas o el mismo vector de proyectos
+
+modulo3 = Reportes(lista_de_los_proyectos) # modulo de reportes
 
 # ================================== TAREAS PENDIENTES A REALIZAR ==========================================
 
