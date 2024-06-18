@@ -1,0 +1,15 @@
+Id Proyecto: 1 Nombre Proyecto: Proyecto Alpha Descripcion Proyecto: Descripción del Proyecto Alpha Inicio Proyecto: 2023-01-01 00:00:00 Vencimiento Proyecto: 2023-12-31 00:00:00 Estado Proyecto: En progreso Empresa Proyecto: Empresa A Gerente Proyecto: Gerente A Equipo Proyecto: ['Miembro1', 'Miembro2']
+101 Tarea 1 Cliente 1 Descripción de la Tarea 1 2023-01-15 00:00:00 2023-02-15 00:00:00 Pendiente 20
+1001 Subtarea 1 Descripción de la Subtarea 1 En progreso
+1001 Subtarea 1.1 Descripción de la Subtarea 1.1 En progreso
+102 Tarea 2 Cliente 2 Descripción de la Tarea 2 2023-03-01 00:00:00 2023-04-01 00:00:00 Completada 100
+1002 Subtarea 3 Descripción de la Subtarea 3 Pendiente
+Id Proyecto: 2 Nombre Proyecto: Proyecto Beta Descripcion Proyecto: Descripción del Proyecto Beta Inicio Proyecto: 2023-02-01 00:00:00 Vencimiento Proyecto: 2023-11-30 00:00:00 Estado Proyecto: En progreso Empresa Proyecto: Empresa B Gerente Proyecto: Gerente B Equipo Proyecto: ['Miembro3', 'Miembro4']
+201 Tarea 3 Cliente 3 Descripción de la Tarea 3 2023-02-15 00:00:00 2023-03-15 00:00:00 En progreso 50
+2000 Subtarea 1 Descripción de la Subtarea 1 En progreso
+202 Tarea 4 Cliente 4 Descripción de la Tarea 4 2023-04-01 00:00:00 2023-05-01 00:00:00 Pendiente 30
+2001 Subtarea 2 Descripción de la Subtarea 2 Pendiente
+Id Proyecto: 3 Nombre Proyecto: Proyecto Gamma Descripcion Proyecto: Descripción del Proyecto Gamma Inicio Proyecto: 2023-03-01 00:00:00 Vencimiento Proyecto: 2023-10-31 00:00:00 Estado Proyecto: Completado Empresa Proyecto: Empresa A Gerente Proyecto: Gerente C Equipo Proyecto: ['Miembro1', 'Miembro3']
+301 Tarea 5 Cliente 5 Descripción de la Tarea 5 2023-03-15 00:00:00 2023-04-15 00:00:00 Completada 100
+302 Tarea 6 Cliente 6 Descripción de la Tarea 6 2023-05-01 00:00:00 2023-06-01 00:00:00 En progreso 75
+3001 Subtarea 3 Descripción de la Subtarea 3 En progreso

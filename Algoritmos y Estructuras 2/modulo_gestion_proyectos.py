@@ -45,6 +45,105 @@ class Subtarea:
         self.condicion=condicion
 
 
+# modulo de importacion y exportacion de datos
+class Archivo:
+
+    def leer_ruta_archivos(self):
+
+        with open("Algoritmos y Estructuras 2\config.txt", "r") as archivo:
+            # Leemos todo el contenido del archivo y lo guardamos en una lista
+            lineas = []
+            for linea in archivo:
+                lineas.append(linea.strip())
+
+        jason = lineas[0]
+        respaldo = lineas[1]
+
+        return jason,respaldo
+    
+    def cargar_datos_desde_json(self):
+        proyectos = []
+
+        jason, respaldo = self.leer_ruta_archivos()
+
+        with open(jason + ".json", "r") as archivo:
+            datos = json.load(archivo)
+            for proyecto_data in datos["proyectos"]:
+                proyecto = Proyectos(
+                    proyecto_data["identificador"],
+                    proyecto_data["titulo"],
+                    proyecto_data["detalles"],
+                    datetime.strptime(proyecto_data["inicio"], "%Y-%m-%d"),
+                    datetime.strptime(proyecto_data["vencimiento"], "%Y-%m-%d"),
+                    proyecto_data["condicion"],
+                    proyecto_data["organizacion"],
+                    proyecto_data["responsable"],
+                    proyecto_data["grupo"]
+                )
+                for tarea_data in proyecto_data["tareas"]:
+                    tarea = Tareas(
+                        tarea_data["identificador"],
+                        tarea_data["titulo"],
+                        tarea_data["cliente"],
+                        tarea_data["detalles"],
+                        datetime.strptime(tarea_data["inicio"], "%Y-%m-%d"),
+                        datetime.strptime(tarea_data["vencimiento"], "%Y-%m-%d"),
+                        tarea_data["condicion"],
+                        tarea_data["avance"]
+                    )
+                    for subtarea_data in tarea_data.get("subtareas", []):
+                        subtarea = Subtarea(
+                            subtarea_data["identificador"],
+                            subtarea_data["titulo"],
+                            subtarea_data["detalles"],
+                            subtarea_data["condicion"]
+                        )
+                        tarea.agregar_subtarea(subtarea)
+                    proyecto.agregar_tareas(tarea)
+                proyectos.append(proyecto)
+
+        # escribimos el respaldo de los datos que se leyeron el .json y lo guardamos en respaldo
+        self.escribir_datos(respaldo,proyectos)
+        return proyectos
+    
+
+    def escribir_datos(self,nombre_archivo,lista_proyectos):
+
+        with open(nombre_archivo + ".txt", 'w') as archivo:
+
+            for i in lista_proyectos:
+
+                archivo.write("Id Proyecto: " + str(i.id) + " ")
+                archivo.write("Nombre Proyecto: " + i.nombre + " ")
+                archivo.write("Descripcion Proyecto: " + i.descripcion + " ")
+                archivo.write("Inicio Proyecto: " + str(i.fecha_de_inicio) + " ")
+                archivo.write("Vencimiento Proyecto: " + str(i.fecha_de_vencimiento) + " ")
+                archivo.write("Estado Proyecto: " + i.estado_actual + " ")
+                archivo.write("Empresa Proyecto: " + i.empresa + " ")
+                archivo.write("Gerente Proyecto: " + i.gerente + " ")
+                archivo.write("Equipo Proyecto: " + str(i.equipo))
+                archivo.write("\n")
+
+                for j in i.tareas:
+                    archivo.write("Id Tarea: " + str(j.id) + " ")
+                    archivo.write("Nombre Tarea: " + j.nombre + " ")
+                    archivo.write("Cliente Tarea: " + j.cliente + " ")
+                    archivo.write("Descripcion Tarea: " + j.descripcion + " ")
+                    archivo.write("Inicio Tarea: " + str(j.fecha_de_inicio) + " ")
+                    archivo.write("Vencimiento Tarea: " + str(j.fecha_de_vencimiento) + " ")
+                    archivo.write("Estado Tarea: " + j.estado_actual + " ")
+                    archivo.write("Porcentaje Tarea: " + str(j.porcentaje))
+                    archivo.write("\n")
+
+                    for k in j.subtareas:
+                        archivo.write("Id subTarea: " + str(k.identificador) + " ")
+                        archivo.write("Nombre subTarea: " + k.titulo + " ")
+                        archivo.write("Descripcion subTarea: " + k.descripcion + " ")
+                        archivo.write("Condicion subTarea: " + str(k.condicion))
+                        archivo.write("\n")
+
+
+
 # Primero Modulo del proyecto
 class Gestion_proyectos:
 
@@ -63,21 +162,21 @@ class Gestion_proyectos:
             print("4- Eliminar Proyectos")
             print("5- Listar Proyectos")
             print("6- Salir del Menu\n")
-            opc = input("Escoje la opcion que desea ejecutar: ")
+            opc = int(input("Escoje la opcion que desea ejecutar: "))
 
-            if int(opc) == 1:
+            if opc == 1:
                 self.crear_proyecto()
                 
-            elif int(opc) == 2:
+            elif opc == 2:
                 self.modificar_proyecto()
 
-            elif int(opc) == 3:
+            elif opc == 3:
                 self.consultar_proyectos()
 
-            elif int(opc) == 4:
+            elif opc == 4:
                 self.eliminar_proyecto()
 
-            elif int(opc) == 5:
+            elif opc == 5:
                 self.listar_proyectos()
 
             else:
@@ -267,25 +366,25 @@ class Gestion_Tareas_prioridades:
             print("1- Agregar nueva tarea")
             print("2- Insertar tarea")
             print("3- Eliminar tarea")
-            print("4- Modificar tarea")
-            print("5- Listar tareas")
+            print("4- Buscar tarea")
+            print("5- Actualizar tareas")
             print("6- Salir del Menu\n")
-            opc = input("Escoje la opcion que desea ejecutar: ")
+            opc = int(input("Escoje la opcion que desea ejecutar: "))
 
-            if int(opc) == 1:
-                self.crear_proyecto()
+            if opc == 1:
+                self.agregar_tareas_al_final()
                 
-            elif int(opc) == 2:
-                self.modificar_proyecto()
+            elif opc == 2:
+                self.insertar_tareas_posicion()
 
-            elif int(opc) == 3:
-                self.consultar_proyectos()
+            elif opc == 3:
+                self.eliminar_tareas()
 
-            elif int(opc) == 4:
-                self.eliminar_proyecto()
+            elif opc == 4:
+                self.buscar_Tareas()
 
-            elif int(opc) == 5:
-                self.listar_proyectos()
+            elif opc == 5:
+                self.actualizar_tareas()
 
             else:
                 break
@@ -470,7 +569,8 @@ class Gestion_Tareas_prioridades:
 
 
 
-Gestion_proyectos()
+archivo = Archivo()
+print(archivo.cargar_datos_desde_json())
 
 # ================================== TAREAS PENDIENTES A REALIZAR ==========================================
 
