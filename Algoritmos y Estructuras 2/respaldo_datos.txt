@@ -1,15 +1,15 @@
 Id Proyecto: 1 Nombre Proyecto: Proyecto Alpha Descripcion Proyecto: Descripción del Proyecto Alpha Inicio Proyecto: 2023-01-01 00:00:00 Vencimiento Proyecto: 2023-12-31 00:00:00 Estado Proyecto: En progreso Empresa Proyecto: Empresa A Gerente Proyecto: Gerente A Equipo Proyecto: ['Miembro1', 'Miembro2']
-101 Tarea 1 Cliente 1 Descripción de la Tarea 1 2023-01-15 00:00:00 2023-02-15 00:00:00 Pendiente 20
-1001 Subtarea 1 Descripción de la Subtarea 1 En progreso
-1001 Subtarea 1.1 Descripción de la Subtarea 1.1 En progreso
-102 Tarea 2 Cliente 2 Descripción de la Tarea 2 2023-03-01 00:00:00 2023-04-01 00:00:00 Completada 100
-1002 Subtarea 3 Descripción de la Subtarea 3 Pendiente
+Id Tarea: 101 Nombre Tarea: Tarea 1 Cliente Tarea: Cliente 1 Descripcion Tarea: Descripción de la Tarea 1 Inicio Tarea: 2023-01-15 00:00:00 Vencimiento Tarea: 2023-02-15 00:00:00 Estado Tarea: Pendiente Porcentaje Tarea: 20
+Id subTarea: 1001 Nombre subTarea: Subtarea 1 Descripcion subTarea: Descripción de la Subtarea 1 Condicion subTarea: En progreso
+Id subTarea: 1001 Nombre subTarea: Subtarea 1.1 Descripcion subTarea: Descripción de la Subtarea 1.1 Condicion subTarea: En progreso
+Id Tarea: 102 Nombre Tarea: Tarea 2 Cliente Tarea: Cliente 2 Descripcion Tarea: Descripción de la Tarea 2 Inicio Tarea: 2023-03-01 00:00:00 Vencimiento Tarea: 2023-04-01 00:00:00 Estado Tarea: Completada Porcentaje Tarea: 100
+Id subTarea: 1002 Nombre subTarea: Subtarea 3 Descripcion subTarea: Descripción de la Subtarea 3 Condicion subTarea: Pendiente
 Id Proyecto: 2 Nombre Proyecto: Proyecto Beta Descripcion Proyecto: Descripción del Proyecto Beta Inicio Proyecto: 2023-02-01 00:00:00 Vencimiento Proyecto: 2023-11-30 00:00:00 Estado Proyecto: En progreso Empresa Proyecto: Empresa B Gerente Proyecto: Gerente B Equipo Proyecto: ['Miembro3', 'Miembro4']
-201 Tarea 3 Cliente 3 Descripción de la Tarea 3 2023-02-15 00:00:00 2023-03-15 00:00:00 En progreso 50
-2000 Subtarea 1 Descripción de la Subtarea 1 En progreso
-202 Tarea 4 Cliente 4 Descripción de la Tarea 4 2023-04-01 00:00:00 2023-05-01 00:00:00 Pendiente 30
-2001 Subtarea 2 Descripción de la Subtarea 2 Pendiente
+Id Tarea: 201 Nombre Tarea: Tarea 3 Cliente Tarea: Cliente 3 Descripcion Tarea: Descripción de la Tarea 3 Inicio Tarea: 2023-02-15 00:00:00 Vencimiento Tarea: 2023-03-15 00:00:00 Estado Tarea: En progreso Porcentaje Tarea: 50
+Id subTarea: 2000 Nombre subTarea: Subtarea 1 Descripcion subTarea: Descripción de la Subtarea 1 Condicion subTarea: En progreso
+Id Tarea: 202 Nombre Tarea: Tarea 4 Cliente Tarea: Cliente 4 Descripcion Tarea: Descripción de la Tarea 4 Inicio Tarea: 2023-04-01 00:00:00 Vencimiento Tarea: 2023-05-01 00:00:00 Estado Tarea: Pendiente Porcentaje Tarea: 30
+Id subTarea: 2001 Nombre subTarea: Subtarea 2 Descripcion subTarea: Descripción de la Subtarea 2 Condicion subTarea: Pendiente
 Id Proyecto: 3 Nombre Proyecto: Proyecto Gamma Descripcion Proyecto: Descripción del Proyecto Gamma Inicio Proyecto: 2023-03-01 00:00:00 Vencimiento Proyecto: 2023-10-31 00:00:00 Estado Proyecto: Completado Empresa Proyecto: Empresa A Gerente Proyecto: Gerente C Equipo Proyecto: ['Miembro1', 'Miembro3']
-301 Tarea 5 Cliente 5 Descripción de la Tarea 5 2023-03-15 00:00:00 2023-04-15 00:00:00 Completada 100
-302 Tarea 6 Cliente 6 Descripción de la Tarea 6 2023-05-01 00:00:00 2023-06-01 00:00:00 En progreso 75
-3001 Subtarea 3 Descripción de la Subtarea 3 En progreso
+Id Tarea: 301 Nombre Tarea: Tarea 5 Cliente Tarea: Cliente 5 Descripcion Tarea: Descripción de la Tarea 5 Inicio Tarea: 2023-03-15 00:00:00 Vencimiento Tarea: 2023-04-15 00:00:00 Estado Tarea: Completada Porcentaje Tarea: 100
+Id Tarea: 302 Nombre Tarea: Tarea 6 Cliente Tarea: Cliente 6 Descripcion Tarea: Descripción de la Tarea 6 Inicio Tarea: 2023-05-01 00:00:00 Vencimiento Tarea: 2023-06-01 00:00:00 Estado Tarea: En progreso Porcentaje Tarea: 75
+Id subTarea: 3001 Nombre subTarea: Subtarea 3 Descripcion subTarea: Descripción de la Subtarea 3 Condicion subTarea: En progreso

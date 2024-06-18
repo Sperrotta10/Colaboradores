@@ -19,6 +19,9 @@ class Proyectos:
     def agregar_tareas(self,tareas):
         self.tareas.append(tareas)
 
+    def insertar_tareas(self,tareas,posicion):
+        self.tareas.insert(posicion,tareas)
+
 
 # Clase de las tareas de los proyectos
 class Tareas:
@@ -48,25 +51,27 @@ class Subtarea:
 # modulo de importacion y exportacion de datos
 class Archivo:
 
+    def __init__ (self):
+        self.jason = ""
+        self.respaldo = ""
+
     def leer_ruta_archivos(self):
 
-        with open("Algoritmos y Estructuras 2\config.txt", "r") as archivo:
+        with open("Algoritmos y Estructuras 2\\config.txt", "r") as archivo:
             # Leemos todo el contenido del archivo y lo guardamos en una lista
             lineas = []
             for linea in archivo:
                 lineas.append(linea.strip())
 
-        jason = lineas[0]
-        respaldo = lineas[1]
-
-        return jason,respaldo
+        self.jason = lineas[0]
+        self.respaldo = lineas[1]
     
     def cargar_datos_desde_json(self):
         proyectos = []
 
-        jason, respaldo = self.leer_ruta_archivos()
+        self.leer_ruta_archivos()
 
-        with open(jason + ".json", "r") as archivo:
+        with open(self.jason + ".json", "r") as archivo:
             datos = json.load(archivo)
             for proyecto_data in datos["proyectos"]:
                 proyecto = Proyectos(
@@ -103,13 +108,13 @@ class Archivo:
                 proyectos.append(proyecto)
 
         # escribimos el respaldo de los datos que se leyeron el .json y lo guardamos en respaldo
-        self.escribir_datos(respaldo,proyectos)
+        self.escribir_datos(proyectos)
         return proyectos
     
 
-    def escribir_datos(self,nombre_archivo,lista_proyectos):
+    def escribir_datos(self,lista_proyectos):
 
-        with open(nombre_archivo + ".txt", 'w') as archivo:
+        with open(self.respaldo + ".txt", 'w') as archivo:
 
             for i in lista_proyectos:
 
@@ -147,9 +152,11 @@ class Archivo:
 # Primero Modulo del proyecto
 class Gestion_proyectos:
 
-    def __init__ (self):
-        self.lista_proyectos = []
+    def __init__ (self,archivo,proyectos):
+        self.lista_proyectos = proyectos
+        self.archivo = archivo
         self.menu_opciones()
+    
     
     def menu_opciones(self):
 
@@ -166,6 +173,7 @@ class Gestion_proyectos:
 
             if opc == 1:
                 self.crear_proyecto()
+                self.archivo.escribir_datos(self.lista_proyectos)  # respaldamos los datos nuevos y anteriores en el txt
                 
             elif opc == 2:
                 self.modificar_proyecto()
@@ -182,67 +190,44 @@ class Gestion_proyectos:
             else:
                 break
 
+
     def crear_proyecto(self):
-        pregunta = input("Desea ingresar los datos manualmente o de forma automatica? (M/A)")
+        
+        cant_proyectos = int(input("Cuantos proyectos deseas crear: "))
 
-        if pregunta.lower() == "m":
+        for i in range(cant_proyectos):
+        
+            # pedimos el ingreso de datos de forma manual
+            id = int(input("Indique el id del proyecto: "))
+            nombre = input("Indique el nombre del proyecto: ")
+            descripcion = input("Indique los detalles del proyecto: ")
+            dia1 = int(input("Introduce el día de inicio del proyecto: "))
+            mes1 = int(input("Introduce el mes de inicio del proyecto: "))
+            anio1 = int(input("Introduce el año de inicio del proyecto: "))
+            fecha_de_inicio = datetime(anio1, mes1, dia1)
+            dia2 = int(input("Introduce el día de vencimiento del proyecto: "))
+            mes2 = int(input("Introduce el mes de vencimiento del proyecto: "))
+            anio2 = int(input("Introduce el año de vencimiento del proyecto: "))
+            fecha_de_vencimiento = datetime(anio2, mes2, dia2)
+            estado_actual = input("Estado actual del proyecto: ")
+            empresa = input("Nombre de la empresa del proyecto: ")
+            gerente = input("Gerente del proyecto: ")
+            cantidad = int(input("numero de integrantes del equipo: "))
+            equipo = []
 
+            for j in range(cantidad):
+                integrante = input("Escribe el " + str(j+1) + " integrante del equipo: ")
+                equipo.append(integrante)
 
-            cant_proyectos = int(input("Cuantos proyectos deseas crear: "))
-
-            for i in range(cant_proyectos):
-            
-                # pedimos el ingreso de datos de forma manual
-                id = int(input("Indique el id del proyecto: "))
-                nombre = input("Indique el nombre del proyecto: ")
-                descripcion = input("Indique los detalles del proyecto: ")
-                dia1 = int(input("Introduce el día de inicio del proyecto: "))
-                mes1 = int(input("Introduce el mes de inicio del proyecto: "))
-                anio1 = int(input("Introduce el año de inicio del proyecto: "))
-                fecha_de_inicio = datetime(anio1, mes1, dia1)
-                dia2 = int(input("Introduce el día de vencimiento del proyecto: "))
-                mes2 = int(input("Introduce el mes de vencimiento del proyecto: "))
-                anio2 = int(input("Introduce el año de vencimiento del proyecto: "))
-                fecha_de_vencimiento = datetime(anio2, mes2, dia2)
-                estado_actual = input("Estado actual del proyecto: ")
-                empresa = input("Nombre de la empresa del proyecto: ")
-                gerente = input("Gerente del proyecto: ")
-                cantidad = int(input("numero de integrantes del equipo: "))
-                equipo = []
-
-                for i in range(cantidad):
-                    integrante = input("Escribe el " + str(i+1) + " integrante del equipo: ")
-                    equipo.append(integrante)
-
-                # creamos un objeto de tipo proyecto
-                proyecto = Proyectos(id,nombre,descripcion,fecha_de_inicio,fecha_de_vencimiento,estado_actual,empresa,gerente,equipo)
-                # agregar proyecto a la lista de proyectos
-                self.lista_proyectos.append(proyecto)
-
-            print("\nProyectos Creados")
-
-        else:
-            
-            # ingresar los datos de forma automatica de un archivo .json
-            with open("datos_prueba_proyecto.json", "r") as archivo:
-                datos = json.load(archivo)
-                for proyecto_data in datos["proyectos"]:
-                    proyecto = Proyectos(
-                        proyecto_data["identificador"],
-                        proyecto_data["titulo"],
-                        proyecto_data["detalles"],
-                        datetime.strptime(proyecto_data["inicio"], "%Y-%m-%d"),
-                        datetime.strptime(proyecto_data["vencimiento"], "%Y-%m-%d"),
-                        proyecto_data["condicion"],
-                        proyecto_data["organizacion"],
-                        proyecto_data["responsable"],
-                        proyecto_data["grupo"]
-                    )
-                    self.lista_proyectos.append(proyecto)
+            # creamos un objeto de tipo proyecto
+            proyecto = Proyectos(id,nombre,descripcion,fecha_de_inicio,fecha_de_vencimiento,estado_actual,empresa,gerente,equipo)
+            # agregar proyecto a la lista de proyectos
+            self.lista_proyectos.append(proyecto)
 
             print("\nProyectos Creados")
         
         self.menu_opciones()
+
 
     def modificar_proyecto(self):
         if len(self.lista_proyectos) == 0:
@@ -272,8 +257,8 @@ class Gestion_proyectos:
                     cantidad = int(input("numero de integrantes del equipo: "))
                     equipo = []
 
-                    for i in range(cantidad):
-                        integrante = input("Escribe el " + str(i+1) + " integrante del equipo: ")
+                    for j in range(cantidad):
+                        integrante = input("Escribe el " + str(j+1) + " integrante del equipo: ")
                         equipo.append(integrante)
 
                     i.equipo = equipo
@@ -284,9 +269,11 @@ class Gestion_proyectos:
                 print("Ese proyecto no existe por lo tanto no se puede modificar")
             else:
                 print("\nProyecto Modificado")
+                self.archivo.escribir_datos(self.lista_proyectos) # respaldamos los datos nuevos y anteriores en el txt
         
         self.menu_opciones()
     
+
     def consultar_proyectos(self):
         if len(self.lista_proyectos) == 0:
             print("No hay proyectos para consultar")
@@ -315,6 +302,7 @@ class Gestion_proyectos:
 
         self.menu_opciones()
 
+
     def eliminar_proyecto(self):
         if len(self.lista_proyectos) == 0:
             print("No hay proyectos para eliminar")
@@ -332,12 +320,14 @@ class Gestion_proyectos:
                 print("Ese proyecto no existe por lo tanto no se puede eliminar")
             else:
                 print("Proyecto Eliminado")
+                self.archivo.escribir_datos(self.lista_proyectos) # respaldamos los datos nuevos y anteriores en el txt
         
         self.menu_opciones()
 
+
     def listar_proyectos(self):
         if len(self.lista_proyectos) == 0:
-                    print("No hay proyectos para listar")
+            print("No hay proyectos para listar")
         else:
 
             for i in self.lista_proyectos:
@@ -354,10 +344,14 @@ class Gestion_proyectos:
         
         self.menu_opciones()
 
+
 # segundo modulo
 class Gestion_Tareas_prioridades:
-    def __init__ (self,lista_proyectos):
+    def __init__ (self,lista_proyectos,archivo):
         self.lista_proyectos = lista_proyectos
+        self.archivo = archivo
+        self.menu_opciones()
+
 
     def menu_opciones(self):
         while True:
@@ -389,45 +383,64 @@ class Gestion_Tareas_prioridades:
             else:
                 break
 
+
     def agregar_tareas_al_final(self):
         
         if len(self.lista_proyectos) != 0:
-            i = 0
-            pila_tareas = pilas.Pila()
-            with open("datos_prueba_proyecto.json", "r") as archivo:
-                datos = json.load(archivo)
-                for proyecto_data in datos["proyectos"]:
-                    for tarea_data in proyecto_data["tareas"]:
-                        tarea = Tareas(
-                            tarea_data["identificador"],
-                            tarea_data["titulo"],
-                            tarea_data["cliente"],
-                            tarea_data["detalles"],
-                            datetime.strptime(tarea_data["inicio"], "%Y-%m-%d"),
-                            datetime.strptime(tarea_data["vencimiento"], "%Y-%m-%d"),
-                            tarea_data["condicion"],
-                            tarea_data["avance"]
-                        )
-                        for subtarea_data in tarea_data.get("subtareas", []):
-                            subtarea = Subtarea(
-                                subtarea_data["identificador"],
-                                subtarea_data["titulo"],
-                                subtarea_data["detalles"],
-                                subtarea_data["condicion"]
-                            )
-                            tarea.agregar_subtarea(subtarea)
 
-                        pila_tareas.agregar(tarea)
-                        self.lista_proyectos[i].agregar_tareas(tarea)
-                    i += 1
+            pila_tareas = pilas.Pila()
+            id_proyecto = int(input("Indique el id del proyecto donde desea ingresar laa tarea: "))
+            bandera = False # indica si la puede ser ingresada en esa posicion o el proyecto seleccionado existe
+
+            for i in self.lista_proyectos:
+                if i.id == id_proyecto:
+
+                    # ingresar datos de las tareas
+                    id = int(input("Indique el id de la tarea: "))
+                    nombre = input("Indique el nombre de la tarea: ")
+                    cliente = input("Indique el cliente de la tarea: ")
+                    descripcion = input("Indique los detalles de la tarea: ")
+                    dia1 = int(input("Introduce el día de inicio de la tarea: "))
+                    mes1 = int(input("Introduce el mes de inicio de la tarea: "))
+                    anio1 = int(input("Introduce el año de inicio de la tarea: "))
+                    fecha_de_inicio = datetime(anio1, mes1, dia1)
+                    dia2 = int(input("Introduce el día de vencimiento de la tarea: "))
+                    mes2 = int(input("Introduce el mes de vencimiento de la tarea: "))
+                    anio2 = int(input("Introduce el año de vencimiento de la tarea: "))
+                    fecha_de_vencimiento = datetime(anio2, mes2, dia2)
+                    estado_actual = input("Indique el estado actual de la tarea: ")
+                    porcentaje = int(input("Indique el porcentaje de la tarea: "))
+
+                    # ingresar datos de las subtareas
+                    identificador = int(input("Indique el id de la subtarea: "))
+                    titulo = input("Indique el nombre de la subtarea: ")
+                    detalles = input("Indique los detalles de la subtarea: ")
+                    condicion = input("Indique la condicion de la subtarea: ")
+
+                    subtareas = Subtarea(identificador,titulo,detalles,condicion)
+
+                    tarea = Tareas(id,nombre,cliente,descripcion,fecha_de_inicio,fecha_de_vencimiento,estado_actual,porcentaje)
+                    tarea.agregar_subtarea(subtareas)
+                    i.agregar_tareas(tarea)
+                    bandera = True
+
+            if bandera is not True:
+                print("No se puede agregar una tarea en ese proyecto porque el index esta fuera de rango, o el id del proyecto seleccionado no existe")
+            else:
+                print("Tarea Agregada")
+                self.archivo.escribir_datos(self.lista_proyectos) # respaldamos los datos nuevos y anteriores en el txt
+
         else:
             print("No hay proyectos disponibles")
+
+        self.menu_opciones()
+
 
     def insertar_tareas_posicion(self):
 
         if len(self.lista_proyectos) != 0:
             posicion = int(input("Indique la posicion donde desea insertar la tarea: "))
-            id_proyecto = int(input("Indique el id del proyecto donde desea ingresar laa tarea"))
+            id_proyecto = int(input("Indique el id del proyecto donde desea ingresar laa tarea: "))
             bandera = False # indica si la puede ser ingresada en esa posicion o el proyecto seleccionado existe
 
             for i in self.lista_proyectos:
@@ -460,17 +473,22 @@ class Gestion_Tareas_prioridades:
 
                         tarea = Tareas(id,nombre,cliente,descripcion,fecha_de_inicio,fecha_de_vencimiento,estado_actual,porcentaje)
                         tarea.agregar_subtarea(subtareas)
-                        i.agregar_tareas(tarea)
+                        i.insertar_tareas(posicion,tarea)
                         bandera = True
 
             if bandera is not True:
                 print("No se puede insertar una tarea en ese proyecto porque el index esta fuera de rango, o el id del proyecto seleccionado no existe")
             else:
                 print("Tarea Insertada")
+                self.archivo.escribir_datos(self.lista_proyectos) # respaldamos los datos nuevos y anteriores en el txt
+
         
         else:
             print("No hay proyectos disponibles")
+
+        self.menu_opciones()
     
+
     def eliminar_tareas(self):
 
         if len(self.lista_proyectos) != 0:
@@ -490,9 +508,15 @@ class Gestion_Tareas_prioridades:
                 print("No se puede eliminar la tarea porque el proyecto no existe o la tarea no existe")
             else:
                 print("Tarea Eliminada")
+                self.archivo.escribir_datos(self.lista_proyectos) # respaldamos los datos nuevos y anteriores en el txt
+
 
         else:
             print("No hay proyectos disponibles")
+
+
+        self.menu_opciones()
+
 
     def buscar_Tareas(self):
 
@@ -512,10 +536,10 @@ class Gestion_Tareas_prioridades:
                         print("condicion de la Tarea" + str(j.estado_actual))
                         print("Avance de la Tarea" + str(j.porcentaje))
                         for k in j.subtareas:
-                            print("Id de la subTarea" + str(j.identificador))
-                            print("Nombre de la Tsubarea" + str(j.titulos))
-                            print("Detalles de la subTarea" + str(j.descripcion))
-                            print("Condicion de la subTarea" + str(j.condicion))
+                            print("Id de la subTarea" + str(k.identificador))
+                            print("Nombre de la Tsubarea" + str(k.titulos))
+                            print("Detalles de la subTarea" + str(k.descripcion))
+                            print("Condicion de la subTarea" + str(k.condicion))
                             print("")
 
                         bandera = True
@@ -528,6 +552,9 @@ class Gestion_Tareas_prioridades:
 
         else:
             print("No hay proyectos disponibles")
+
+        self.menu_opciones()
+
 
     def actualizar_tareas(self):
 
@@ -562,15 +589,58 @@ class Gestion_Tareas_prioridades:
                 print("No se puede actualizar la tarea porque el id no existe")
             else:
                 print("Tarea Actualizada")
+                self.archivo.escribir_datos(self.lista_proyectos) # respaldamos los datos nuevos y anteriores en el txt
+
 
         else:
             print("No hay proyectos disponibles")
 
 
+        self.menu_opciones()
+
+
+
+# Modulo de Reportes
+class Reportes:
+    
+    def __init__ (self,lista_proyectos):
+        self.lista_proyectos = lista_proyectos
+
+    def menu_opciones(self):
+        while True:
+
+            print("\nMenu de Opciones")
+            print("1- Agregar nueva tarea")
+            print("2- Insertar tarea")
+            print("3- Eliminar tarea")
+            print("4- Buscar tarea")
+            print("5- Actualizar tareas")
+            print("6- Salir del Menu\n")
+            opc = int(input("Escoje la opcion que desea ejecutar: "))
+
+            if opc == 1:
+                self.agregar_tareas_al_final()
+                
+            elif opc == 2:
+                self.insertar_tareas_posicion()
+
+            elif opc == 3:
+                self.eliminar_tareas()
+
+            elif opc == 4:
+                self.buscar_Tareas()
+
+            elif opc == 5:
+                self.actualizar_tareas()
+
+            else:
+                break
 
 
 archivo = Archivo()
-print(archivo.cargar_datos_desde_json())
+lista_de_los_proyectos = archivo.cargar_datos_desde_json()
+modulo1 = Gestion_proyectos(archivo,lista_de_los_proyectos)
+lista_de_los_proyectos = modulo1.lista_proyectos
 
 # ================================== TAREAS PENDIENTES A REALIZAR ==========================================
 
