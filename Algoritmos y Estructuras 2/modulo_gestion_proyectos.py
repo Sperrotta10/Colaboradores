@@ -1,6 +1,6 @@
 
 from datetime import datetime
-import json
+import json, pilas
 
 # Clase de los proyectos
 class Proyectos:
@@ -50,6 +50,7 @@ class Gestion_proyectos:
 
     def __init__ (self):
         self.lista_proyectos = []
+        self.menu_opciones()
     
     def menu_opciones(self):
 
@@ -62,24 +63,24 @@ class Gestion_proyectos:
             print("4- Eliminar Proyectos")
             print("5- Listar Proyectos")
             print("6- Salir del Menu\n")
-            opc = int(input("Escoje la opcion que desea ejecutar: "))
+            opc = input("Escoje la opcion que desea ejecutar: ")
 
-            if opc == 1:
+            if int(opc) == 1:
                 self.crear_proyecto()
                 
-            elif opc == 2:
+            elif int(opc) == 2:
                 self.modificar_proyecto()
 
-            elif opc == 3:
+            elif int(opc) == 3:
                 self.consultar_proyectos()
 
-            elif opc == 4:
+            elif int(opc) == 4:
                 self.eliminar_proyecto()
 
-            elif opc == 5:
+            elif int(opc) == 5:
                 self.listar_proyectos()
 
-            elif opc == 6:
+            else:
                 break
 
     def crear_proyecto(self):
@@ -124,7 +125,7 @@ class Gestion_proyectos:
         else:
             
             # ingresar los datos de forma automatica de un archivo .json
-            with open("datos_prueba1.json", "r") as archivo:
+            with open("datos_prueba_proyecto.json", "r") as archivo:
                 datos = json.load(archivo)
                 for proyecto_data in datos["proyectos"]:
                     proyecto = Proyectos(
@@ -259,10 +260,41 @@ class Gestion_Tareas_prioridades:
     def __init__ (self,lista_proyectos):
         self.lista_proyectos = lista_proyectos
 
-    def agregar_tareas_al_final(self):
+    def menu_opciones(self):
+        while True:
 
+            print("\nMenu de Opciones")
+            print("1- Agregar nueva tarea")
+            print("2- Insertar tarea")
+            print("3- Eliminar tarea")
+            print("4- Modificar tarea")
+            print("5- Listar tareas")
+            print("6- Salir del Menu\n")
+            opc = input("Escoje la opcion que desea ejecutar: ")
+
+            if int(opc) == 1:
+                self.crear_proyecto()
+                
+            elif int(opc) == 2:
+                self.modificar_proyecto()
+
+            elif int(opc) == 3:
+                self.consultar_proyectos()
+
+            elif int(opc) == 4:
+                self.eliminar_proyecto()
+
+            elif int(opc) == 5:
+                self.listar_proyectos()
+
+            else:
+                break
+
+    def agregar_tareas_al_final(self):
+        
         if len(self.lista_proyectos) != 0:
             i = 0
+            pila_tareas = pilas.Pila()
             with open("datos_prueba_proyecto.json", "r") as archivo:
                 datos = json.load(archivo)
                 for proyecto_data in datos["proyectos"]:
@@ -285,6 +317,8 @@ class Gestion_Tareas_prioridades:
                                 subtarea_data["condicion"]
                             )
                             tarea.agregar_subtarea(subtarea)
+
+                        pila_tareas.agregar(tarea)
                         self.lista_proyectos[i].agregar_tareas(tarea)
                     i += 1
         else:
@@ -408,7 +442,7 @@ class Gestion_Tareas_prioridades:
                     if j.id == id_tarea:
 
                         # actualizar datos de las tareas
-                        j.id = int(input("Indique el id de la tarea: "))
+                        #j.id = int(input("Indique el id de la tarea: "))
                         j.nombre = input("Indique el nombre de la tarea: ")
                         j.cliente = input("Indique el cliente de la tarea: ")
                         j.descripcion = input("Indique los detalles de la tarea: ")
@@ -435,6 +469,8 @@ class Gestion_Tareas_prioridades:
 
 
 
+
+Gestion_proyectos()
 
 # ================================== TAREAS PENDIENTES A REALIZAR ==========================================
 
