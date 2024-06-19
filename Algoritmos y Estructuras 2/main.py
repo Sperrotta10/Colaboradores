@@ -60,17 +60,18 @@ def cargar_tareas_desde_archivo(id_proyecto):
                 contenido = archivo.read().strip()
         except Exception as e:
             print(f"No se pudo abrir el archivo: {e}")
-            return pilas_colas.Pila()  
+            return pilas_colas.Pila()
 
     if not contenido:
         print("El archivo 'tareas.txt' está vacío.")
-        return pilas_colas.Pila()  
+        return pilas_colas.Pila()
 
     pila_tareas = pilas_colas.Pila()
 
-    proyectos_datos = contenido.split("\n\nProyecto ID: ")
+    proyectos_datos = contenido.split("Proyecto ID: ")
     for proyecto_str in proyectos_datos:
-        if not proyecto_str.startswith(f"Proyecto ID: {id_proyecto}"):
+        # Buscamos el proyecto con el ID correspondiente
+        if f"{id_proyecto}" not in proyecto_str:
             continue
 
         lineas = proyecto_str.split("\n")
@@ -106,10 +107,9 @@ def cargar_tareas_desde_archivo(id_proyecto):
         print(f"Tareas del Proyecto ID {id_proyecto} cargadas correctamente desde el archivo.")
         return pila_tareas  # Retornamos la pila con las tareas cargadas
 
-
+    # Si no se encontró el proyecto con el ID dado
     print(f"No se encontró el Proyecto ID {id_proyecto} en el archivo.")
     return pilas_colas.Pila()  # Retorna una pila vacía si no se encontró el proyecto
-
 
 while True:
     print('-' * 40)

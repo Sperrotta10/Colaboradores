@@ -31,10 +31,10 @@ class Reportes:
                     continue
             
             print("Con que tarea va a trabajar?")
-            if self.verificar_tareas_proyecto(num):
-                print("Este proyecto aún no tiene tareas para trabajar...")
-                opc = input("Quiere volver al menú prinicipal para agregar tareas? (S/N)")
-                if opc.lower == "s":
+            if self.verificar_id_proyecto(num):
+                print("El id del proyecto a trabajar no existe!!")
+                opc = input("¿Quiere volver al menú principal para agregar proyectos? (S/N)")
+                if opc.lower() == "s":  # Corregido: llamada a lower()
                     break
                 else:
                     continue

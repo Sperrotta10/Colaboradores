@@ -17,23 +17,14 @@ Proyecto ID: 2
 {
     Tareas:
 
-    ID = 202
-    Titulo = Tarea 4
-    Cliente = Cliente 4
-    Detalles = Descripción de la Tarea 4
-    Fecha de Inicio = 2023-04-01
-    Fecha de Vencimiento = 2023-05-01
-    Condicion = Pendiente
-    Avance = 30%
-
-    ID = 201
-    Titulo = Tarea 3
-    Cliente = Cliente 3
-    Detalles = Descripción de la Tarea 3
-    Fecha de Inicio = 2023-02-15
-    Fecha de Vencimiento = 2023-03-15
-    Condicion = En progreso
-    Avance = 50%
+    ID = 102
+    Titulo = Tarea 2
+    Cliente = Cliente 2
+    Detalles = Descripcion de la Tarea 2
+    Fecha de Inicio = 2023-03-01
+    Fecha de Vencimiento = 2023-04-01
+    Condicion = Completada
+    Avance = 100%
 
 }
 
