@@ -47,6 +47,8 @@ class Gestion_Tareas_prioridades:
             else:
                 break
 
+            self.exportar_tareas_a_txt()
+
     def verificar_proyecto(self, lista_proyectos):
         if len(lista_proyectos) == 0:
             return True
@@ -177,6 +179,7 @@ class Gestion_Tareas_prioridades:
 
     def listar_tareas(self, id_proyecto):
         proyecto = self.lista_proyectos[id_proyecto - 1]
+        bandera = False
         tareas = proyecto.tareas
         for j in range(tareas.get_largo()):
                 tarea_actual = tareas.obtener_valor_en_indice(j)
@@ -202,7 +205,7 @@ class Gestion_Tareas_prioridades:
 
         
         if bandera is not True:
-            print("No se pueda encontrar la tarea porque el id no existe")
+            print("No hay tareas para enlistar, cree una tarea!!")
         else:
             print("Tarea encontrada")
 
@@ -259,3 +262,30 @@ class Gestion_Tareas_prioridades:
 
         print(f"No se encontró una tarea con el ID {id_tarea} en el proyecto {id_proyecto}.")
         return None
+
+    def exportar_tareas_a_txt(self, nombre_archivo="tareas.txt"):
+        with open(nombre_archivo, "w") as archivo:
+            for proyecto in self.lista_proyectos:
+                archivo.write(f"Proyecto ID: {proyecto.id}\n")
+                archivo.write("{\n    Tareas:\n\n")
+                tareas_pila = proyecto.tareas
+
+                if tareas_pila.esta_vacia():
+                    archivo.write("    No hay tareas en este proyecto.\n")
+                else:
+                    nodo_actual = tareas_pila.tope
+                    while nodo_actual is not None:
+                        tarea = nodo_actual.valor
+                        archivo.write(f"    ID = {tarea.id}\n")
+                        archivo.write(f"    Título = {tarea.nombre}\n")
+                        archivo.write(f"    Cliente = {tarea.cliente}\n")
+                        archivo.write(f"    Detalles = {tarea.descripcion}\n")
+                        archivo.write(f"    Fecha de Inicio = {tarea.fecha_de_inicio.strftime('%Y-%m-%d')}\n")
+                        archivo.write(f"    Fecha de Vencimiento = {tarea.fecha_de_vencimiento.strftime('%Y-%m-%d')}\n")
+                        archivo.write(f"    Condición = {tarea.estado_actual}\n")
+                        archivo.write(f"    Avance = {tarea.porcentaje}%\n")
+                        archivo.write("\n")
+                        nodo_actual = nodo_actual.siguiente
+
+                archivo.write("}\n\n")
+        print(f"Tareas exportadas a {nombre_archivo}")
