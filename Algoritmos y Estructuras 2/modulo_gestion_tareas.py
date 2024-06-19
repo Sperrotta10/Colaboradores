@@ -1,4 +1,5 @@
-import datetime, json
+from datetime import datetime
+import json
 from clases_proyectos_tareas_subtareas import *
 
 # segundo modulo
@@ -22,26 +23,26 @@ class Gestion_Tareas_prioridades:
 
             print("\nMenu de Opciones")
             print("1- Agregar nueva tarea")
-            print("2- Insertar tarea")
+            print("2- Insertar la posición de una tarea a otra posición")
             print("3- Eliminar tarea")
             print("4- Modificar tarea")
             print("5- Listar tareas")
             print("6- Salir del Menu\n")
             opc = input("Escoje la opcion que desea ejecutar: ")
 
-            if int(opc) == 1:
+            if opc == "1":
                 self.agregar_tareas_al_final(num)
                 
-            elif int(opc) == 2:
+            elif opc == "2":
                 self.insertar_tareas_posicion(num)
 
-            elif int(opc) == 3:
+            elif opc == "3":
                 self.consultar_proyectos()
 
-            elif int(opc) == 4:
+            elif opc == "4":
                 self.eliminar_proyecto()
 
-            elif int(opc) == 5:
+            elif opc == "5":
                 self.listar_proyectos()
 
             else:
@@ -54,7 +55,7 @@ class Gestion_Tareas_prioridades:
             return False            
 
     def agregar_tareas_al_final(self, id):
-        print(self.lista_proyectos[id].nombre)
+        print(self.lista_proyectos[id - 1].nombre)
         pregunta = input("Desea ingresar los datos manualmente o de forma automática? (M/A) ")
         
         if pregunta.lower() == "m":
@@ -73,7 +74,7 @@ class Gestion_Tareas_prioridades:
             avance = int(input("Indique su avance: "))
 
             tarea = Tareas(titulo, cliente, detalles, fecha_inicio, fecha_vencimiento, condicion, avance)
-            self.lista_proyectos[id].agregar_tareas(tarea)
+            self.lista_proyectos[id - 1].agregar_tareas(tarea)
 
         else:
             if len(self.lista_proyectos) != 0:
@@ -91,83 +92,102 @@ class Gestion_Tareas_prioridades:
                             tarea_data["condicion"],
                             tarea_data["avance"]
                         )
-                        self.lista_proyectos[id].agregar_tareas(tarea)
+                        self.lista_proyectos[id - 1].agregar_tareas(tarea)
             else:
                 print("No hay proyectos disponibles")
 
-
-
-
     def insertar_tareas_posicion(self, id_proyecto):
-
-        if len(self.lista_proyectos) != 0:
-            posicion = int(input("Indique la posicion donde desea insertar la tarea: "))
-            #id_proyecto = int(input("Indique el id del proyecto donde desea ingresar laa tarea"))
-            bandera = False # indica si la puede ser ingresada en esa posicion o el proyecto seleccionado existe
-
-            for i in self.lista_proyectos:
-                if i.id == id_proyecto:
-                    if len(i.tareas)-1 >= posicion and posicion >= 0:
-
-                        # ingresar datos de las tareas
-                        id = int(input("Indique el id de la tarea: "))
-                        nombre = input("Indique el nombre de la tarea: ")
-                        cliente = input("Indique el cliente de la tarea: ")
-                        descripcion = input("Indique los detalles de la tarea: ")
-                        dia1 = int(input("Introduce el día de inicio de la tarea: "))
-                        mes1 = int(input("Introduce el mes de inicio de la tarea: "))
-                        anio1 = int(input("Introduce el año de inicio de la tarea: "))
-                        fecha_de_inicio = datetime(anio1, mes1, dia1)
-                        dia2 = int(input("Introduce el día de vencimiento de la tarea: "))
-                        mes2 = int(input("Introduce el mes de vencimiento de la tarea: "))
-                        anio2 = int(input("Introduce el año de vencimiento de la tarea: "))
-                        fecha_de_vencimiento = datetime(anio2, mes2, dia2)
-                        estado_actual = input("Indique el estado actual de la tarea: ")
-                        porcentaje = int(input("Indique el porcentaje de la tarea: "))
-
-                        # ingresar datos de las subtareas
-                        identificador = int(input("Indique el id de la subtarea: "))
-                        titulo = input("Indique el nombre de la subtarea: ")
-                        detalles = input("Indique los detalles de la subtarea: ")
-                        condicion = input("Indique la condicion de la subtarea: ")
-
-                        subtareas = Subtarea(identificador,titulo,detalles,condicion)
-
-                        tarea = Tareas(id,nombre,cliente,descripcion,fecha_de_inicio,fecha_de_vencimiento,estado_actual,porcentaje)
-                        tarea.agregar_subtarea(subtareas)
-                        i.agregar_tareas(tarea)
-                        bandera = True
-
-            if bandera is not True:
-                print("No se puede insertar una tarea en ese proyecto porque el index esta fuera de rango, o el id del proyecto seleccionado no existe")
-            else:
-                print("Tarea Insertada")
-        
-        else:
+        if len(self.lista_proyectos) == 0:
             print("No hay proyectos disponibles")
+            return
+
+        id_proyecto = int(id_proyecto) - 1  
+        if id_proyecto < 0 or id_proyecto >= len(self.lista_proyectos):
+            print("El ID del proyecto seleccionado no existe")
+            return
+
+        proyecto = self.lista_proyectos[id_proyecto]
+        tareas_pila = proyecto.tareas
+
+        if tareas_pila.esta_vacia():
+            print("No hay tareas disponibles en el proyecto.")
+            return
+
+        print("Tareas disponibles:")
+        nodo_actual = tareas_pila.tope
+        indice = 0
+        while nodo_actual is not None:
+            print(f"{indice}: {nodo_actual.valor.nombre}")
+            nodo_actual = nodo_actual.siguiente
+            indice += 1
+
+        indice_tarea = int(input("Indique el índice de la tarea que desea mover: "))
+        if indice_tarea < 0 or indice_tarea >= tareas_pila.get_largo():
+            print("El índice de la tarea está fuera de rango.")
+            return
+
+        nueva_posicion = int(input("Indique la nueva posición de la tarea: "))
+        if nueva_posicion < 0 or nueva_posicion >= tareas_pila.get_largo():
+            print("La nueva posición está fuera del rango de las tareas del proyecto.")
+            return
+
+        if indice_tarea == nueva_posicion:
+            print("La tarea ya está en esa posición.")
+            return
+
+        tarea_a_mover = tareas_pila.eliminar_en_posicion(indice_tarea)
+
+        if nueva_posicion < tareas_pila.get_largo():
+            tarea_a_intercambiar = tareas_pila.eliminar_en_posicion(nueva_posicion)
+            tareas_pila.insertar_en_posicion(tarea_a_intercambiar, indice_tarea)
+            print(f"Tarea '{tarea_a_intercambiar.nombre}' movida a la posición {indice_tarea}.")
+        else:
+            print("No hay tarea en la posición nueva, solo se insertará la tarea en la nueva posición.")
+
+        tareas_pila.insertar_en_posicion(tarea_a_mover, nueva_posicion)
+        print(f"Tarea '{tarea_a_mover.nombre}' movida a la posición {nueva_posicion}.")
     
     def eliminar_tareas(self):
-
-        if len(self.lista_proyectos) != 0:
-
-            id_proyecto = int(input("Indica el id del proyecto el cual desea eliminar una tarea: "))
-            id_tarea = int(input("Indica el id de la tarea que desea eliminar: "))
-            bandera = False # indica si el id del proyecto es valido o el id de la tarea es valido
-
-            for i in self.lista_proyectos:
-                if i.id == id_proyecto:
-                    for j in i.tareas:
-                        if j.id == id_tarea:
-                            i.tareas.remove(j)
-                            bandera = True
-
-            if bandera is not True:
-                print("No se puede eliminar la tarea porque el proyecto no existe o la tarea no existe")
-            else:
-                print("Tarea Eliminada")
-
-        else:
+        if len(self.lista_proyectos) == 0:
             print("No hay proyectos disponibles")
+            return
+
+        id_proyecto = int(input("Indica el ID del proyecto del cual desea eliminar una tarea: "))
+        id_tarea = int(input("Indica el ID de la tarea que desea eliminar: "))
+        
+        proyecto_encontrado = None
+        tarea_encontrada = False
+
+        for proyecto in self.lista_proyectos:
+            if proyecto.id == id_proyecto:
+                proyecto_encontrado = proyecto
+                break
+
+        if proyecto_encontrado is None:
+            print("El proyecto no existe.")
+            return
+
+        tareas_pila = proyecto_encontrado.tareas
+        nodo_actual = tareas_pila.tope
+        nodo_anterior = None
+
+        while nodo_actual is not None:
+            if nodo_actual.valor.id == id_tarea:
+                tarea_encontrada = True
+                if nodo_anterior is None:
+                    tareas_pila.tope = nodo_actual.siguiente
+                else:
+                    nodo_anterior.siguiente = nodo_actual.siguiente
+                break
+            nodo_anterior = nodo_actual
+            nodo_actual = nodo_actual.siguiente
+
+        if not tarea_encontrada:
+            print("La tarea no existe en el proyecto seleccionado.")
+        else:
+            print("Tarea eliminada.")
+
+
 
     def buscar_Tareas(self):
 
