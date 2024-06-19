@@ -265,25 +265,24 @@ class Gestion_proyectos:
     def eliminar_proyecto(self):
         if len(self.lista_proyectos) == 0:
             print("No hay proyectos para eliminar")
-        else:
+            return
 
-            pedir_id = int(input("Ingresar el id del proyecto que desea eliminar: "))
-            bandera = False # esta bandera es para verificar si el id de ese proyecto existe
+        pedir_id = int(input("Ingresar el id del proyecto que desea eliminar: "))
+        proyecto_eliminado = None
 
-            for i in self.lista_proyectos:
-                if i.id == pedir_id:
-                    self.lista_proyectos.remove(i)
-                    bandera = True
-
-            if bandera is not True:
-                print("Ese proyecto no existe por lo tanto no se puede eliminar")
-            else:
+        for proyecto in self.lista_proyectos:
+            if proyecto.id == pedir_id:
+                proyecto_eliminado = proyecto
+                self.lista_proyectos.remove(proyecto)
                 print("Proyecto Eliminado")
+                break
         
-        self.menu_opciones()
+        if proyecto_eliminado:
+            self.actualizar_archivo_proyectos()
+        
     def listar_proyectos(self):
         if len(self.lista_proyectos) == 0:
-                    print("No hay proyectos para listar")
+            print("No hay proyectos para listar")
         else:
 
             for i in self.lista_proyectos:
@@ -297,6 +296,19 @@ class Gestion_proyectos:
                 print("gerente del proyecto: " + str(i.gerente))
                 print("equipo del proyecto: " + str(i.equipo))
                 print("")
+
+    def actualizar_archivo_proyectos(self):
+        with open("proyectos.txt", "w") as archivo:
+            for proyecto in self.lista_proyectos:
+                archivo.write(f"ID: {proyecto.id}\n")
+                archivo.write(f"Nombre: {proyecto.nombre}\n")
+                archivo.write(f"Descripción: {proyecto.descripcion}\n")
+                archivo.write(f"Fecha de Inicio: {proyecto.fecha_de_inicio.strftime('%Y-%m-%d')}\n")
+                archivo.write(f"Fecha de Vencimiento: {proyecto.fecha_de_vencimiento.strftime('%Y-%m-%d')}\n")
+                archivo.write(f"Estado Actual: {proyecto.estado_actual}\n")
+                archivo.write(f"Empresa: {proyecto.empresa}\n")
+                archivo.write(f"Gerente: {proyecto.gerente}\n")
+                archivo.write(f"Equipo: {', '.join(proyecto.equipo)}\n\n")
     
     def get_lista_proyectos(self):
         return self.lista_proyectos
