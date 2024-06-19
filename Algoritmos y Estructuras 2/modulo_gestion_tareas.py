@@ -6,6 +6,7 @@ from clases_proyectos_tareas_subtareas import *
 class Gestion_Tareas_prioridades:
     def __init__ (self,lista_proyectos):
         self.lista_proyectos = lista_proyectos
+        self.bandera = False
         
         if self.verificar_proyecto(lista_proyectos):
             print("No hay proyectos para consultar tareas... Cree un proyecto!!")
@@ -19,8 +20,15 @@ class Gestion_Tareas_prioridades:
             print("De que proyecto quiere investigar?: ")
             num = int(input("Escoja el id del proyecto: "))
 
+            if self.verificar_id_proyecto(num):
+                print("El id del proyecto a trabajar no existe!!")
+                continue
 
-            print("\nMenu de Opciones")
+
+
+            print('-' * 40)
+            print('           Menú de Opciones')
+            print('-' * 40)
             print("1- Agregar nueva tarea")
             print("2- Insertar la posición de una tarea a otra posición")
             print("3- Eliminar tarea")
@@ -53,7 +61,13 @@ class Gestion_Tareas_prioridades:
         if len(lista_proyectos) == 0:
             return True
         else:
-            return False            
+            return False         
+
+    def verificar_id_proyecto(self, id_proyecto):
+        if id_proyecto > len(self.lista_proyectos):
+            return True
+        else:
+            return False   
 
     def agregar_tareas_al_final(self, id):
         print(self.lista_proyectos[id - 1].nombre)
@@ -149,6 +163,11 @@ class Gestion_Tareas_prioridades:
         print(f"Tarea '{tarea_a_mover.nombre}' movida a la posición {nueva_posicion}.")
     
     def eliminar_tareas(self, id_proyecto):
+        self.listar_tareas_id(id_proyecto)
+
+        if self.bandera == False:
+            return
+
         id_tarea = int(input("Indica el ID de la tarea que desea eliminar: "))
         id_proyecto = id_proyecto - 1
 
@@ -210,19 +229,11 @@ class Gestion_Tareas_prioridades:
             print("Tarea encontrada")
 
     def actualizar_tareas(self, id_proyecto):
-        proyecto = self.lista_proyectos[id_proyecto - 1]
-        tareas = proyecto.tareas
-        if (tareas.get_largo()) == 0:
-            print("No hay tareas para modificar...")
-            return
-        
-        print("ID's de las tareas existentes: ")
-        for j in range(tareas.get_largo()):
-            tarea_actual = tareas.obtener_valor_en_indice(j)
-            
-            print("")
-            print(f'ID de la tarea "{tarea_actual.nombre}": {tarea_actual.id}')
     
+        self.listar_tareas_id(id_proyecto)
+
+        if self.bandera == False:
+            return
 
         id_tarea = int(input("Indique el ID de la tarea que desea actualizar la información: "))
 
@@ -277,15 +288,30 @@ class Gestion_Tareas_prioridades:
                     while nodo_actual is not None:
                         tarea = nodo_actual.valor
                         archivo.write(f"    ID = {tarea.id}\n")
-                        archivo.write(f"    Título = {tarea.nombre}\n")
+                        archivo.write(f"    Titulo = {tarea.nombre}\n")
                         archivo.write(f"    Cliente = {tarea.cliente}\n")
                         archivo.write(f"    Detalles = {tarea.descripcion}\n")
                         archivo.write(f"    Fecha de Inicio = {tarea.fecha_de_inicio.strftime('%Y-%m-%d')}\n")
                         archivo.write(f"    Fecha de Vencimiento = {tarea.fecha_de_vencimiento.strftime('%Y-%m-%d')}\n")
-                        archivo.write(f"    Condición = {tarea.estado_actual}\n")
+                        archivo.write(f"    Condicion = {tarea.estado_actual}\n")
                         archivo.write(f"    Avance = {tarea.porcentaje}%\n")
                         archivo.write("\n")
                         nodo_actual = nodo_actual.siguiente
 
                 archivo.write("}\n\n")
         print(f"Tareas exportadas a {nombre_archivo}")
+
+    def listar_tareas_id(self, id_proyecto):
+        proyecto = self.lista_proyectos[id_proyecto - 1]
+        tareas = proyecto.tareas
+        if (tareas.get_largo()) == 0:
+            print("No hay tareas para trabajar...")
+            return
+        
+        print("ID's de las tareas existentes: ")
+        for j in range(tareas.get_largo()):
+            tarea_actual = tareas.obtener_valor_en_indice(j)
+            
+            print("")
+            print(f'ID de la tarea "{tarea_actual.nombre}": {tarea_actual.id}')
+        self.bandera = True

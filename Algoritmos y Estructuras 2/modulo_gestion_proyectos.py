@@ -22,8 +22,9 @@ class Gestion_proyectos:
     
     def menu_opciones(self):
         while True:
-            print("")
-            print("Menú de opciones: ")
+            print('-' * 40)
+            print('           Menú de Opciones')
+            print('-' * 40)
             print("1- Crear Proyectos")
             print("2- Modificar Proyectos")
             print("3- Consultar Proyectos")

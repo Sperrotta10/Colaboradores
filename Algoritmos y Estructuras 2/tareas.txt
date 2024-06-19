@@ -1,23 +1,39 @@
-proyecto id: 1{
+Proyecto ID: 1
+{
     Tareas:
 
-    id = Tarea 1
-    titulo = Tarea 1
-    cliente = Cliente 1
-    detalles = Descripción de la Tarea 1
-    fecha_inicio = 2023-01-15
-    fecha_vencimiento = 2023-02-15
-    condicion = Pendiente
-    avance = 20
+    ID = 102
+    Titulo = Tarea 2
+    Cliente = Cliente 2
+    Detalles = Descripcion de la Tarea 2
+    Fecha de Inicio = 2023-03-01
+    Fecha de Vencimiento = 2023-04-01
+    Condicion = Completada
+    Avance = 100%
 
-    id = Tarea 2
-    titulo = Tarea 2
-    cliente = Cliente 2
-    detalles = Descripción de la Tarea 2
-    fecha_inicio = 2023-03-01
-    fecha_vencimiento = 2023-04-01
-    condicion = Completada
-    avance = 100
+}
+
+Proyecto ID: 2
+{
+    Tareas:
+
+    ID = 202
+    Titulo = Tarea 4
+    Cliente = Cliente 4
+    Detalles = Descripción de la Tarea 4
+    Fecha de Inicio = 2023-04-01
+    Fecha de Vencimiento = 2023-05-01
+    Condicion = Pendiente
+    Avance = 30%
+
+    ID = 201
+    Titulo = Tarea 3
+    Cliente = Cliente 3
+    Detalles = Descripción de la Tarea 3
+    Fecha de Inicio = 2023-02-15
+    Fecha de Vencimiento = 2023-03-15
+    Condicion = En progreso
+    Avance = 50%
 
 }
 

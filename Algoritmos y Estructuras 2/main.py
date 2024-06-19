@@ -10,6 +10,7 @@ Elaborado por:
 
 from modulo_gestion_proyectos import *
 from modulo_gestion_tareas import *
+from modulo_reportes import *
 
 def cargar_proyectos_desde_archivo():
         # Verifica si el archivo existe
@@ -49,16 +50,83 @@ def cargar_proyectos_desde_archivo():
 
         return lista_proyectos_cargados
 
+def cargar_tareas_desde_archivo(id_proyecto):
+    try:
+        with open("tareas.txt", "r", encoding="utf-8") as archivo:
+            contenido = archivo.read().strip()
+    except UnicodeDecodeError:
+        try:
+            with open("tareas.txt", "r", encoding="latin-1") as archivo:
+                contenido = archivo.read().strip()
+        except Exception as e:
+            print(f"No se pudo abrir el archivo: {e}")
+            return pilas_colas.Pila()  
+
+    if not contenido:
+        print("El archivo 'tareas.txt' está vacío.")
+        return pilas_colas.Pila()  
+
+    pila_tareas = pilas_colas.Pila()
+
+    proyectos_datos = contenido.split("\n\nProyecto ID: ")
+    for proyecto_str in proyectos_datos:
+        if not proyecto_str.startswith(f"Proyecto ID: {id_proyecto}"):
+            continue
+
+        lineas = proyecto_str.split("\n")
+        tareas_inicio = -1
+
+        for i, linea in enumerate(lineas):
+            if linea.strip() == "Tareas:":
+                tareas_inicio = i + 1
+                break
+
+        if tareas_inicio == -1:
+            print(f"No se encontró la sección de tareas para el Proyecto ID {id_proyecto}.")
+            return pilas_colas.Pila()  # Retorna una pila vacía si no se encontró la sección de tareas
+
+        while tareas_inicio < len(lineas):
+            if lineas[tareas_inicio].strip().startswith("ID ="):
+                tarea_id = int(lineas[tareas_inicio].split("= ")[1].strip())
+                titulo = lineas[tareas_inicio + 1].split("= ")[1].strip()
+                cliente = lineas[tareas_inicio + 2].split("= ")[1].strip()
+                detalles = lineas[tareas_inicio + 3].split("= ")[1].strip()
+                fecha_inicio = datetime.strptime(lineas[tareas_inicio + 4].split("= ")[1].strip(), '%Y-%m-%d')
+                fecha_vencimiento = datetime.strptime(lineas[tareas_inicio + 5].split("= ")[1].strip(), '%Y-%m-%d')
+                condicion = lineas[tareas_inicio + 6].split("= ")[1].strip()
+                avance = int(lineas[tareas_inicio + 7].split("= ")[1].strip().replace("%", ""))
+
+                # Crear objeto Tareas y añadir a la pila
+                tarea = Tareas(tarea_id, titulo, cliente, detalles, fecha_inicio, fecha_vencimiento, condicion, avance)
+                pila_tareas.agregar(tarea)
+                tareas_inicio += 8
+            else:
+                tareas_inicio += 1
+
+        print(f"Tareas del Proyecto ID {id_proyecto} cargadas correctamente desde el archivo.")
+        return pila_tareas  # Retornamos la pila con las tareas cargadas
+
+
+    print(f"No se encontró el Proyecto ID {id_proyecto} en el archivo.")
+    return pilas_colas.Pila()  # Retorna una pila vacía si no se encontró el proyecto
+
+
 while True:
-    print("\nMenu de Opciones")
+    print('-' * 40)
+    print('           Menú de Opciones')
+    print('-' * 40)
     print("1- Gestionar proyectos")
     print("2- Gestionar Tareas")
-    print("3- Gestionar ")
+    print("3- Gestionar Reportes")
     print("4- Salir del Menu\n")
+    print('-' * 40)
 
     opc = input("Escoja la opción que desea ejecutar: ")
 
     lista_proyectos = cargar_proyectos_desde_archivo()
+    for i in range(len(lista_proyectos)):
+        pila_tareas = cargar_tareas_desde_archivo(i + 1)
+        lista_proyectos[i].tareas = pila_tareas
 
     # Verificación de que la entrada es un entero válido
     try:
@@ -74,9 +142,8 @@ while True:
 
     elif opc == 2:
         Gestion_Tareas_prioridades(lista_proyectos)
-        print("Hola 2")
     elif opc == 3:
-        print("Hola 3")
+        Reportes(lista_proyectos)
     elif opc == 4:
         break
     else:
