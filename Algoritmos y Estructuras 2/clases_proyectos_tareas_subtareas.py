@@ -31,10 +31,10 @@ class Tareas:
         self.fecha_de_vencimiento = fecha_de_vencimiento
         self.estado_actual = estado_actual
         self.porcentaje = porcentaje
-        self.subtareas = [] 
+        self.subtareas = pilas_colas.Cola()
 
     def agregar_subtarea(self,subtarea):
-        self.subtareas.append(subtarea)
+        self.subtareas.agregar(subtarea)
 
 # Clase de las subtareas de las tareas del proyecto
 class Subtarea:

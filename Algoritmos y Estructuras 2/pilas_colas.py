@@ -148,4 +148,77 @@ class Cola:
             while actual:
                 print(actual.valor)
                 actual = actual.siguiente
+    
+    def obtener_valor_en_indice(self, indice):
+        if self.esta_vacia():
+            print("La cola está vacía")
+            return None
+        
+        nodo_actual = self.frente
+        contador = 0
+        
+        while nodo_actual is not None:
+            if contador == indice:
+                return nodo_actual.valor
+            nodo_actual = nodo_actual.siguiente
+            contador += 1
+        
+        print(f"El índice {indice} está fuera del rango de la cola.")
+        return None
+    
+    def get_largo(self):
+        if self.esta_vacia():
+            return 0
+        
+        nodo_actual = self.frente
+        contador = 0
+        
+        while nodo_actual is not None:
+            contador += 1
+            nodo_actual = nodo_actual.siguiente
+        
+        return contador
+    
+    def insertar_en_posicion(self, valor, posicion):
+        if posicion < 0 or posicion > self.get_largo():
+            print("Posición fuera de rango")
+            return
+        
+        nuevo_nodo = Nodo(valor)
+        
+        if posicion == 0:
+            nuevo_nodo.siguiente = self.frente
+            self.frente = nuevo_nodo
+            if self.final is None:
+                self.final = nuevo_nodo
+        else:
+            nodo_actual = self.frente
+            for i in range(posicion - 1):
+                nodo_actual = nodo_actual.siguiente
+            nuevo_nodo.siguiente = nodo_actual.siguiente
+            nodo_actual.siguiente = nuevo_nodo
+            if nodo_actual == self.final:
+                self.final = nuevo_nodo
+    
+    def eliminar_en_posicion(self, posicion):
+        if posicion < 0 or posicion >= self.get_largo():
+            print("Posición fuera de rango")
+            return None
+
+        nodo_actual = self.frente
+        
+        if posicion == 0:
+            nodo_a_eliminar = nodo_actual
+            self.frente = nodo_actual.siguiente
+            if nodo_a_eliminar == self.final:
+                self.final = None
+        else:
+            for _ in range(posicion - 1):
+                nodo_actual = nodo_actual.siguiente
+            nodo_a_eliminar = nodo_actual.siguiente
+            nodo_actual.siguiente = nodo_a_eliminar.siguiente
+            if nodo_a_eliminar == self.final:
+                self.final = nodo_actual
+        
+        return nodo_a_eliminar.valor
 
