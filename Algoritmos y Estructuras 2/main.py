@@ -1,4 +1,15 @@
+"""
+Parcial IV. TDA. Listas Enlazadas, Pilas y Colas
+
+Elaborado por:
+
+- Jesús Araujo. C.I: 31.200.562
+- Lai Chang. C.I: 31.335.078
+- Santiago Perrotta. C.I: 31.014.123
+"""
+
 from modulo_gestion_proyectos import *
+from modulo_gestion_tareas import *
 
 while True:
     print("\nMenu de Opciones")

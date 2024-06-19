@@ -1,0 +1,23 @@
+proyecto id: 1{
+    Tareas:
+
+    id = Tarea 1
+    titulo = Tarea 1
+    cliente = Cliente 1
+    detalles = Descripción de la Tarea 1
+    fecha_inicio = 2023-01-15
+    fecha_vencimiento = 2023-02-15
+    condicion = Pendiente
+    avance = 20
+
+    id = Tarea 2
+    titulo = Tarea 2
+    cliente = Cliente 2
+    detalles = Descripción de la Tarea 2
+    fecha_inicio = 2023-03-01
+    fecha_vencimiento = 2023-04-01
+    condicion = Completada
+    avance = 100
+
+}
+
