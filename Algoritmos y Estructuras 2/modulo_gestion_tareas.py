@@ -39,10 +39,10 @@ class Gestion_Tareas_prioridades:
                 self.eliminar_tareas(num)
 
             elif opc == "4":
-                self.actualizar_tareas()
+                self.actualizar_tareas(num)
 
             elif opc == "5":
-                self.listar_tareas()
+                self.listar_tareas(num)
 
             else:
                 break
@@ -175,25 +175,29 @@ class Gestion_Tareas_prioridades:
 
 
 
-    def listar_tareas(self, id_tarea):
-        proyecto = self.lista_proyectos[id_tarea - 1]
-        for j in proyecto.tareas:
-            if j.id == id_tarea:
-                print("Id de la Tarea" + str(j.id))
-                print("Titulo de la Tarea" + str(j.nombre))
-                print("Cliente de la Tarea" + str(j.cliente))
-                print("Detalles de la Tarea" + str(j.descripcion))
-                print("Inicio de la Tarea" + str(j.fecha_de_inicio))
-                print("Vencimiento de la Tarea" + str(j.fecha_de_vencimiento))
-                print("condicion de la Tarea" + str(j.estado_actual))
-                print("Avance de la Tarea" + str(j.porcentaje))
-                for k in j.subtareas:
+    def listar_tareas(self, id_proyecto):
+        proyecto = self.lista_proyectos[id_proyecto - 1]
+        tareas = proyecto.tareas
+        for j in range(tareas.get_largo()):
+                tarea_actual = tareas.obtener_valor_en_indice(j)
+
+                print("Id de la Tarea: " + str(tarea_actual.id))
+                print("Titulo de la Tarea: " + str(tarea_actual.nombre))
+                print("Cliente de la Tarea: " + str(tarea_actual.cliente))
+                print("Detalles de la Tarea: " + str(tarea_actual.descripcion))
+                print("Inicio de la Tarea: " + str(tarea_actual.fecha_de_inicio))
+                print("Vencimiento de la Tarea: " + str(tarea_actual.fecha_de_vencimiento))
+                print("condicion de la Tarea: " + str(tarea_actual.estado_actual))
+                print("Avance de la Tarea: " + str(tarea_actual.porcentaje))
+                print("")
+                
+                """for k in j.subtareas:
                     print("Id de la subTarea" + str(j.identificador))
                     print("Nombre de la Tsubarea" + str(j.titulos))
                     print("Detalles de la subTarea" + str(j.descripcion))
                     print("Condicion de la subTarea" + str(j.condicion))
                     print("")
-
+"""
                 bandera = True
 
         
@@ -202,39 +206,56 @@ class Gestion_Tareas_prioridades:
         else:
             print("Tarea encontrada")
 
-    def actualizar_tareas(self):
+    def actualizar_tareas(self, id_proyecto):
+        proyecto = self.lista_proyectos[id_proyecto - 1]
+        tareas = proyecto.tareas
+        if (tareas.get_largo()) == 0:
+            print("No hay tareas para modificar...")
+            return
+        
+        print("ID's de las tareas existentes: ")
+        for j in range(tareas.get_largo()):
+            tarea_actual = tareas.obtener_valor_en_indice(j)
+            
+            print("")
+            print(f'ID de la tarea "{tarea_actual.nombre}": {tarea_actual.id}')
+    
 
-        if len(self.lista_proyectos) != 0:
+        id_tarea = int(input("Indique el ID de la tarea que desea actualizar la información: "))
 
-            id_tarea = int(input("Indique el id de la tarea que desea actualizar la informacion: "))
-            bandera = False # indica si el id de la tarea es valido
+        # Verificar si la tarea existe
+        tarea = self.existe_tarea(id_proyecto, id_tarea)
+        if tarea is None:
+            print(f"No se puede actualizar la tarea porque el ID {id_tarea} no existe en el proyecto {id_proyecto}.")
+            return
 
-            for i in self.lista_proyectos:
-                for j in i.tareas:
-                    if j.id == id_tarea:
+        # Actualizar datos de la tarea
+        tarea.nombre = input("Indique el nombre de la tarea: ")
+        tarea.cliente = input("Indique el cliente de la tarea: ")
+        tarea.descripcion = input("Indique los detalles de la tarea: ")
+        dia1 = int(input("Introduce el día de inicio de la tarea: "))
+        mes1 = int(input("Introduce el mes de inicio de la tarea: "))
+        anio1 = int(input("Introduce el año de inicio de la tarea: "))
+        tarea.fecha_de_inicio = datetime(anio1, mes1, dia1)
+        dia2 = int(input("Introduce el día de vencimiento de la tarea: "))
+        mes2 = int(input("Introduce el mes de vencimiento de la tarea: "))
+        anio2 = int(input("Introduce el año de vencimiento de la tarea: "))
+        tarea.fecha_de_vencimiento = datetime(anio2, mes2, dia2)
+        tarea.estado_actual = input("Indique el estado actual de la tarea: ")
+        tarea.porcentaje = int(input("Indique el porcentaje de la tarea: "))
+        
+        print("Tarea Actualizada")
 
-                        # actualizar datos de las tareas
-                        #j.id = int(input("Indique el id de la tarea: "))
-                        j.nombre = input("Indique el nombre de la tarea: ")
-                        j.cliente = input("Indique el cliente de la tarea: ")
-                        j.descripcion = input("Indique los detalles de la tarea: ")
-                        dia1 = int(input("Introduce el día de inicio de la tarea: "))
-                        mes1 = int(input("Introduce el mes de inicio de la tarea: "))
-                        anio1 = int(input("Introduce el año de inicio de la tarea: "))
-                        j.fecha_de_inicio = datetime(anio1, mes1, dia1)
-                        dia2 = int(input("Introduce el día de vencimiento de la tarea: "))
-                        mes2 = int(input("Introduce el mes de vencimiento de la tarea: "))
-                        anio2 = int(input("Introduce el año de vencimiento de la tarea: "))
-                        j.fecha_de_vencimiento = datetime(anio2, mes2, dia2)
-                        j.estado_actual = input("Indique el estado actual de la tarea: ")
-                        j.porcentaje = int(input("Indique el porcentaje de la tarea: "))
-                        
-                        bandera = True
 
-            if bandera is not True:
-                print("No se puede actualizar la tarea porque el id no existe")
-            else:
-                print("Tarea Actualizada")
+    def existe_tarea(self, id_proyecto, id_tarea):
+        # Buscar el proyecto
+        for proyecto in self.lista_proyectos:
+            if proyecto.id == id_proyecto:
+                nodo_actual = proyecto.tareas.tope
+                while nodo_actual is not None:
+                    if nodo_actual.valor.id == id_tarea:
+                        return nodo_actual.valor  # Retorna la tarea encontrada
+                    nodo_actual = nodo_actual.siguiente
 
-        else:
-            print("No hay proyectos disponibles")
+        print(f"No se encontró una tarea con el ID {id_tarea} en el proyecto {id_proyecto}.")
+        return None
