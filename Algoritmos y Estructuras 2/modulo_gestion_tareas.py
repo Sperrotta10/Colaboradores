@@ -7,6 +7,11 @@ class Gestion_Tareas_prioridades:
     def __init__ (self,lista_proyectos):
         self.lista_proyectos = lista_proyectos
         self.bandera = False
+        self.estado_tareas = {
+            "C": "Completado",
+            "E": "En progreso",
+            "P": "Pendiente"
+        }
         
         if self.verificar_proyecto(lista_proyectos):
             print("No hay proyectos para consultar tareas... Cree un proyecto!!")
@@ -71,12 +76,17 @@ class Gestion_Tareas_prioridades:
 
     def agregar_tareas_al_final(self, id):
         print(self.lista_proyectos[id - 1].nombre)
-        pregunta = input("Desea ingresar los datos manualmente o de forma automática? (M/A) ")
+        pregunta = input("Desea ingresar los datos manualmente o de forma automática? (M/A) o quiere regresar al menú? N para menú: ")
         
-        if pregunta.lower() == "m":
+        if pregunta.lower() == "n":
+            return
+        
+        elif pregunta.lower() == "m":
             titulo = input("Indique el titulo de la tarea: ")
             cliente = input("Indique el cliente de la tarea: ")
-            detalles = input("Indique detalles de la tarea: ")
+            print("Indique los detalles de la tarea")
+            estado = input("C para completado, E para en progreso y P para pendiente: ")
+            detalles = self.estado_tareas[estado.capitalize()]
             dia1 = int(input("Indique el dia de inicio: "))
             mes1 = int(input("Indique el mes de inicio: "))
             anio1 = int(input("Indique el año de inicio: "))
@@ -89,6 +99,19 @@ class Gestion_Tareas_prioridades:
             avance = int(input("Indique su avance: "))
 
             tarea = Tareas(titulo, cliente, detalles, fecha_inicio, fecha_vencimiento, condicion, avance)
+
+            opc = input("Quiere agregar subtareas?: (s/n)")
+            if opc.lower() == "n":
+                return
+            else:
+                subtarea_id = input("Id de la subTarea:" )
+                subtarea_nombre = input("Nombre de la Tsubarea:" )
+                subtarea_detalles = input("Detalles de la subTarea:" )
+                estado = input("Condicion de la subTarea:" )
+                subtarea_estado = self.estado_tareas[estado.capitalize()]
+
+                subtarea = Subtarea(subtarea_id, subtarea_nombre, subtarea_detalles, subtarea_estado)
+            tarea.agregar_subtarea(subtarea)
             self.lista_proyectos[id - 1].agregar_tareas(tarea)
 
         else:
@@ -199,28 +222,31 @@ class Gestion_Tareas_prioridades:
     def listar_tareas(self, id_proyecto):
         proyecto = self.lista_proyectos[id_proyecto - 1]
         bandera = False
+
+        if bandera == False:
+            return
         tareas = proyecto.tareas
         for j in range(tareas.get_largo()):
-                tarea_actual = tareas.obtener_valor_en_indice(j)
+            tarea_actual = tareas.obtener_valor_en_indice(j)
 
-                print("Id de la Tarea: " + str(tarea_actual.id))
-                print("Titulo de la Tarea: " + str(tarea_actual.nombre))
-                print("Cliente de la Tarea: " + str(tarea_actual.cliente))
-                print("Detalles de la Tarea: " + str(tarea_actual.descripcion))
-                print("Inicio de la Tarea: " + str(tarea_actual.fecha_de_inicio))
-                print("Vencimiento de la Tarea: " + str(tarea_actual.fecha_de_vencimiento))
-                print("condicion de la Tarea: " + str(tarea_actual.estado_actual))
-                print("Avance de la Tarea: " + str(tarea_actual.porcentaje))
+            print("Id de la Tarea: " + str(tarea_actual.id))
+            print("Titulo de la Tarea: " + str(tarea_actual.nombre))
+            print("Cliente de la Tarea: " + str(tarea_actual.cliente))
+            print("Detalles de la Tarea: " + str(tarea_actual.descripcion))
+            print("Inicio de la Tarea: " + str(tarea_actual.fecha_de_inicio))
+            print("Vencimiento de la Tarea: " + str(tarea_actual.fecha_de_vencimiento))
+            print("condicion de la Tarea: " + str(tarea_actual.estado_actual))
+            print("Avance de la Tarea: " + str(tarea_actual.porcentaje))
+            print("")
+            
+            """for k in j.subtareas:
+                print("Id de la subTarea" + str(j.identificador))
+                print("Nombre de la Tsubarea" + str(j.titulos))
+                print("Detalles de la subTarea" + str(j.descripcion))
+                print("Condicion de la subTarea" + str(j.condicion))
                 print("")
-                
-                """for k in j.subtareas:
-                    print("Id de la subTarea" + str(j.identificador))
-                    print("Nombre de la Tsubarea" + str(j.titulos))
-                    print("Detalles de la subTarea" + str(j.descripcion))
-                    print("Condicion de la subTarea" + str(j.condicion))
-                    print("")
 """
-                bandera = True
+            bandera = True
 
         
         if bandera is not True:

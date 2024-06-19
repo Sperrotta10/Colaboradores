@@ -7,7 +7,9 @@ class Reportes:
 
     def __init__ (self,lista_proyectos):
         self.lista_proyectos = lista_proyectos
+        self.bandera = False
         self.menu_opciones()
+        
 
         if self.verificar_proyecto(lista_proyectos):
             print("No hay proyectos para consultar tareas... Cree un proyecto!!")
@@ -30,18 +32,20 @@ class Reportes:
                 else:
                     continue
             
-            print("Con que tarea va a trabajar?")
-            if self.verificar_id_proyecto(num):
-                print("El id del proyecto a trabajar no existe!!")
+            if self.verificar_tareas_proyecto(num):
+                print("El proyecto no tiene tareas para trabajar!!")
                 opc = input("¿Quiere volver al menú principal para agregar proyectos? (S/N)")
                 if opc.lower() == "s":  # Corregido: llamada a lower()
                     break
                 else:
                     continue
+                
+            print("Con que tarea va a trabajar?")
+            self.listar_tareas_id(num)
+            if self.bandera == False:
+                break
 
             print("Listando los ID's de las tareas actuales:")
-
-            self.listar_tareas_id(num)
 
             print("")
             print('-' * 40)
@@ -66,8 +70,10 @@ class Reportes:
             elif opc == 4:
                 self.listar_subtareas()
 
-            else:
+            elif opc == 5:
                 break
+            else:
+                print("Ingrese un dato dentro del rango del menú")
 
     def verificar_proyecto(self, lista_proyectos):
         if len(lista_proyectos) == 0:
@@ -87,113 +93,78 @@ class Reportes:
         else:
             return False
 
-    def consultar_tareas(self):
+    def consultar_tareas(self, id_proyecto):
+        contador = 0
+        proyecto = self.lista_proyectos[id_proyecto - 1]
+        tarea = proyecto.tareas
 
-        lista_tareas_por_estado = []
+        print("Indique el estado de la tarea que desea consultar")
+        estado = input("C para completado, E para en progreso, P para pendiente")
 
-        estado = input("Indique el estado de la tarea que desea consultar: ")
-
-        for i in self.lista_proyectos:
-            for j in i.tareas:
-                if j.estado_actual == estado.capitalize():
-                    lista_tareas_por_estado.append(j)
-
-
-        if len(lista_tareas_por_estado) != 0:
-
-            for j in lista_tareas_por_estado:
-                print("Id de la Tarea" + str(j.id))
-                print("Titulo de la Tarea" + str(j.nombre))
-                print("Cliente de la Tarea" + str(j.cliente))
-                print("Detalles de la Tarea" + str(j.descripcion))
-                print("Inicio de la Tarea" + str(j.fecha_de_inicio))
-                print("Vencimiento de la Tarea" + str(j.fecha_de_vencimiento))
-                print("condicion de la Tarea" + str(j.estado_actual))
-                print("Avance de la Tarea" + str(j.porcentaje))
-
-        else:
+        print(f"Tareas en estado de {estado}")
+        for i in range(tarea.get_largo()):
+            
+            tarea_actual = tarea.obtener_valor_en_indice(i)
+            if tarea_actual.estado_actual == estado:
+                contador += 1
+                print(f'Tarea: {tarea_actual.nombre}| id: {tarea_actual.id}| estado: {tarea_actual.estado_actual}')
+        
+        if contador == 0:
             print("No se puede consultar tareas por estado porque no existe ninguna tarea con el estado que seleccion el usuario")
 
+    def filtrado_fecha(self, id_proyecto):
+        proyecto = self.lista_proyectos[id_proyecto - 1]
+        tareas = proyecto.tareas
+        contador = 0
 
-    def filtrado_fecha(self):
+        diccionario = {
+            "i": "inicio",
+            "v": "vencimiento",
 
-        filtrar_tareas = []
+        }
+
+        lista_tareas = []
+
         fecha = input("Desea filtar fechas por incio o vencimiento? (I/V): ")
 
-        # filtramos tareas por fecha de inicio
-        if fecha.lower() == "i":
+        # ingresamos datos de la fecha de inicio
+        dia1 = int(input(f"Introduce el día de {diccionario[fecha]} de la tarea: "))
+        mes1 = int(input(f"Introduce el mes de {diccionario[fecha]} de la tarea: "))
+        anio1 = int(input(f"Introduce el año de {diccionario[fecha]} de la tarea: "))
 
-            # ingresamos datos de la fecha de inicio
-            dia1 = int(input("Introduce el día de inicio de la tarea: "))
-            mes1 = int(input("Introduce el mes de inicio de la tarea: "))
-            anio1 = int(input("Introduce el año de inicio de la tarea: "))
+        fecha = datetime(anio1, mes1, dia1)
 
-            fecha_de_inicio = datetime(anio1, mes1, dia1)
+        # le pedimos al usuario que indique si quiere buscar antes o despues de la fecha que selecciono
+        encontrar = input("Desea encontrar una tarea antes o despues de esa fecha seleccionada? (A/D): ")
 
-            # le pedimos al usuario que indique si quiere buscar antes o despues de la fecha que selecciono
-            encontrar = input("Desea encontrar una tarea antes o despues de esa fecha seleccionada? (A/D): ")
-
-            # filtramos tareas antes de la fecha que selecciono el usuario
-            if encontrar.lower() == "a":
-
-                for i in self.lista_proyectos:
-                    for j in i.tareas:
-                        if j.fecha_de_inicio < fecha_de_inicio:
-                            filtrar_tareas.append(j)
-
-            # filtramos tareas despues de la fecha que selecciono el usuario
-            elif encontrar.lower() == "d":
-
-                for i in self.lista_proyectos:
-                    for j in i.tareas:
-                        if j.fecha_de_inicio > fecha_de_inicio:
-                            filtrar_tareas.append(j)
-
-
-        # filtramos tareas por fecha de vencimiento
-        elif fecha.lower() == "v":
-
-             # ingresamos datos de la fecha de vencimiento
-            dia1 = int(input("Introduce el día de vencimiento de la tarea: "))
-            mes1 = int(input("Introduce el mes de vencimiento de la tarea: "))
-            anio1 = int(input("Introduce el año de vencimiento de la tarea: "))
-
-            fecha_de_vencimiento = datetime(anio1, mes1, dia1)
-
-            # le pedimos al usuario que indique si quiere buscar antes o despues de la fecha que selecciono
-            encontrar = input("Desea encontrar una tarea antes o despues de esa fecha seleccionada? (A/D): ")
-
-            # filtramos tareas antes de la fecha que selecciono el usuario
-            if encontrar.lower() == "a":
-
-                for i in self.lista_proyectos:
-                    for j in i.tareas:
-                        if j.fecha_de_vencimiento < fecha_de_vencimiento:
-                            filtrar_tareas.append(j)
-
-            # filtramos tareas despues de la fecha que selecciono el usuario
-            elif encontrar.lower() == "d":
-
-                for i in self.lista_proyectos:
-                    for j in i.tareas:
-                        if j.fecha_de_vencimiento > fecha_de_vencimiento:
-                            filtrar_tareas.append(j)
-
-
-        if len(filtrar_tareas) != 0:
-
-            for i in filtrar_tareas:
-                print("Id de la Tarea" + str(j.id))
-                print("Titulo de la Tarea" + str(j.nombre))
-                print("Cliente de la Tarea" + str(j.cliente))
-                print("Detalles de la Tarea" + str(j.descripcion))
-                print("Inicio de la Tarea" + str(j.fecha_de_inicio))
-                print("Vencimiento de la Tarea" + str(j.fecha_de_vencimiento))
-                print("condicion de la Tarea" + str(j.estado_actual))
-                print("Avance de la Tarea" + str(j.porcentaje))
-
+        # filtramos tareas antes de la fecha que selecciono el usuario
+        if encontrar.lower() == "a":
+            for i in range(tareas.get_largo()):
+                tarea_actual = tareas.obtener_valor_en_indice(i)
+                if fecha == "i":
+                    if tarea_actual.fecha_de_inicio < fecha:
+                        print(f'Tarea: {tarea_actual.nombre}| ID:{tarea_actual.id}| fecha de inicio: {tarea_actual.fecha_de_inicio}')
+                        contador += 1
+                else:
+                    if tarea_actual.fecha_de_vencimiento < fecha:
+                        print(f'Tarea: {tarea_actual.nombre}| ID:{tarea_actual.id}| fecha de inicio: {tarea_actual.fecha_de_inicio}')
+                        contador += 1
         else:
-            print("No se puede filtrar ninguna tarea por fecha porque el rango de la fechas seleccionadas por el usuario no existe")
+            for i in range(tareas.get_largo()):
+                tarea_actual = tareas.obtener_valor_en_indice(i)
+                if fecha == "i":
+                    if tarea_actual.fecha_de_inicio > fecha:
+                        print(f'Tarea: {tarea_actual.nombre}| ID:{tarea_actual.id}| fecha de inicio: {tarea_actual.fecha_de_inicio}')
+                        contador += 1
+                else:
+                    if tarea_actual.fecha_de_vencimiento > fecha:
+                        print(f'Tarea: {tarea_actual.nombre}| ID:{tarea_actual.id}| fecha de inicio: {tarea_actual.fecha_de_inicio}')
+                        contador += 1
+
+        if contador == 0:
+            print("No se encontraron tareas con la fecha establecida...")
+
+        
 
     def listar_tareas_id(self, id_proyecto):
         proyecto = self.lista_proyectos[id_proyecto - 1]
@@ -208,3 +179,20 @@ class Reportes:
             
             print("")
             print(f'ID de la tarea "{tarea_actual.nombre}": {tarea_actual.id}')
+            self.bandera = True 
+
+    def actualizar_archivo_tareas(lista_proyectos):
+        with open("subtareas.txt", "w", encoding="utf-8") as archivo:
+            for proyecto in lista_proyectos:
+                archivo.write(f"Proyecto ID: {proyecto.id}\n")
+                for tarea in proyecto.tareas:
+                    archivo.write(f"    Tarea ID: {tarea.tarea_id}\n")
+                    archivo.write(f"        Subtareas:\n")
+                    for subtarea in tarea.subtareas:
+                        archivo.write(f"            ID = {subtarea.subtarea_id}\n")
+                        archivo.write(f"            Titulo = {subtarea.titulo}\n")
+                        archivo.write(f"            Detalles = {subtarea.detalles}\n")
+                        archivo.write(f"            Condicion = {subtarea.condicion}\n")
+                    archivo.write("\n")
+                archivo.write("\n")
+

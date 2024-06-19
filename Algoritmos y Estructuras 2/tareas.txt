@@ -2,15 +2,7 @@ Proyecto ID: 1
 {
     Tareas:
 
-    ID = 102
-    Titulo = Tarea 2
-    Cliente = Cliente 2
-    Detalles = Descripcion de la Tarea 2
-    Fecha de Inicio = 2023-03-01
-    Fecha de Vencimiento = 2023-04-01
-    Condicion = Completada
-    Avance = 100%
-
+    No hay tareas en este proyecto.
 }
 
 Proyecto ID: 2

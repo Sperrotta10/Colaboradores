@@ -1,0 +1,40 @@
+Proyecto ID: 1
+{
+    Tarea ID: 102
+    {
+        Subtareas:
+
+            ID = 2001
+            Titulo = Subtarea 2
+            Detalles = Descripción de la Subtarea 2
+            Condicion = Pendiente
+
+            ID = 2003
+            Titulo = Subtarea 1
+            Detalles = Descripción de la Subtarea 1
+            Condicion = Pendiente
+
+    }
+
+}
+
+Proyecto ID: 2
+{
+    Tarea ID: 103
+    {
+        Subtareas:
+
+            ID = 2001
+            Titulo = Subtarea 2
+            Detalles = Descripción de la Subtarea 2
+            Condicion = Pendiente
+
+            ID = 2003
+            Titulo = Subtarea 1
+            Detalles = Descripción de la Subtarea 1
+            Condicion = Pendiente
+
+    }
+
+}
+
