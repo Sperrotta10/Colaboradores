@@ -19,7 +19,6 @@ class Gestion_Tareas_prioridades:
             print("De que proyecto quiere investigar?: ")
             num = int(input("Escoja el id del proyecto: "))
 
-            #if self.verificar_proyecto()
 
             print("\nMenu de Opciones")
             print("1- Agregar nueva tarea")
@@ -37,13 +36,13 @@ class Gestion_Tareas_prioridades:
                 self.insertar_tareas_posicion(num)
 
             elif opc == "3":
-                self.consultar_proyectos()
+                self.eliminar_tareas(num)
 
             elif opc == "4":
-                self.eliminar_proyecto()
+                self.actualizar_tareas()
 
             elif opc == "5":
-                self.listar_proyectos()
+                self.listar_tareas()
 
             else:
                 break
@@ -80,7 +79,7 @@ class Gestion_Tareas_prioridades:
             if len(self.lista_proyectos) != 0:
                 with open("datos_prueba_proyecto.json", "r") as archivo_json:
                     datos = json.load(archivo_json)
-                    proyecto_data = datos["proyectos"][id - 1]  # Restamos 1 para ajustarnos al índice de Python (comienza en 0)
+                    proyecto_data = datos["proyectos"][id - 1]  
                     for tarea_data in proyecto_data["tareas"]:
                         tarea = Tareas(
                             tarea_data["identificador"],
@@ -147,25 +146,12 @@ class Gestion_Tareas_prioridades:
         tareas_pila.insertar_en_posicion(tarea_a_mover, nueva_posicion)
         print(f"Tarea '{tarea_a_mover.nombre}' movida a la posición {nueva_posicion}.")
     
-    def eliminar_tareas(self):
-        if len(self.lista_proyectos) == 0:
-            print("No hay proyectos disponibles")
-            return
-
-        id_proyecto = int(input("Indica el ID del proyecto del cual desea eliminar una tarea: "))
+    def eliminar_tareas(self, id_proyecto):
         id_tarea = int(input("Indica el ID de la tarea que desea eliminar: "))
-        
-        proyecto_encontrado = None
+        id_proyecto = id_proyecto - 1
+
+        proyecto_encontrado = self.lista_proyectos[id_proyecto]
         tarea_encontrada = False
-
-        for proyecto in self.lista_proyectos:
-            if proyecto.id == id_proyecto:
-                proyecto_encontrado = proyecto
-                break
-
-        if proyecto_encontrado is None:
-            print("El proyecto no existe.")
-            return
 
         tareas_pila = proyecto_encontrado.tareas
         nodo_actual = tareas_pila.tope
@@ -189,40 +175,32 @@ class Gestion_Tareas_prioridades:
 
 
 
-    def buscar_Tareas(self):
+    def listar_tareas(self, id_tarea):
+        proyecto = self.lista_proyectos[id_tarea - 1]
+        for j in proyecto.tareas:
+            if j.id == id_tarea:
+                print("Id de la Tarea" + str(j.id))
+                print("Titulo de la Tarea" + str(j.nombre))
+                print("Cliente de la Tarea" + str(j.cliente))
+                print("Detalles de la Tarea" + str(j.descripcion))
+                print("Inicio de la Tarea" + str(j.fecha_de_inicio))
+                print("Vencimiento de la Tarea" + str(j.fecha_de_vencimiento))
+                print("condicion de la Tarea" + str(j.estado_actual))
+                print("Avance de la Tarea" + str(j.porcentaje))
+                for k in j.subtareas:
+                    print("Id de la subTarea" + str(j.identificador))
+                    print("Nombre de la Tsubarea" + str(j.titulos))
+                    print("Detalles de la subTarea" + str(j.descripcion))
+                    print("Condicion de la subTarea" + str(j.condicion))
+                    print("")
 
-        if len(self.lista_proyectos) != 0:
-            id_tarea = int(input("Indique el id de la tarea que desea buscar: "))
-            bandera = False # inidca si el id de la tarea es valido
+                bandera = True
 
-            for i in self.lista_proyectos:
-                for j in i.tareas:
-                    if j.id == id_tarea:
-                        print("Id de la Tarea" + str(j.id))
-                        print("Titulo de la Tarea" + str(j.nombre))
-                        print("Cliente de la Tarea" + str(j.cliente))
-                        print("Detalles de la Tarea" + str(j.descripcion))
-                        print("Inicio de la Tarea" + str(j.fecha_de_inicio))
-                        print("Vencimiento de la Tarea" + str(j.fecha_de_vencimiento))
-                        print("condicion de la Tarea" + str(j.estado_actual))
-                        print("Avance de la Tarea" + str(j.porcentaje))
-                        for k in j.subtareas:
-                            print("Id de la subTarea" + str(j.identificador))
-                            print("Nombre de la Tsubarea" + str(j.titulos))
-                            print("Detalles de la subTarea" + str(j.descripcion))
-                            print("Condicion de la subTarea" + str(j.condicion))
-                            print("")
-
-                        bandera = True
-
-            
-            if bandera is not True:
-                print("No se pueda encontrar la tarea porque el id no existe")
-            else:
-                print("Tarea encontrada")
-
+        
+        if bandera is not True:
+            print("No se pueda encontrar la tarea porque el id no existe")
         else:
-            print("No hay proyectos disponibles")
+            print("Tarea encontrada")
 
     def actualizar_tareas(self):
 
