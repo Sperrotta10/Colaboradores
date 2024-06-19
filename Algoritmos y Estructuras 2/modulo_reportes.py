@@ -164,7 +164,49 @@ class Reportes:
         if contador == 0:
             print("No se encontraron tareas con la fecha establecida...")
 
+    def filtrado_proyectos(self):
+        contador = 0
+
+        for i in self.lista_proyectos:
+            tareas = i.tareas
+            largo = tareas.get_largo()
+
+            for j in range(largo):
+                tarea_actual = tareas.obtener_valor_en_indice(j)
+                
+                if tarea_actual.estado == "Completada":
+                    contador += 1
+
+            print("id del proyecto: " + str(i.id))
+            print("nombre del proyecto: " + str(i.nombre))
+            print("descripcion del proyecto: " + str(i.descripcion))
+            print("fecha de inicio del proyecto: " + str(i.fecha_de_inicio))
+            print("fecha de vencimiento del proyecto: " + str(i.fecha_de_vencimiento))
+            print("estado actual del proyecto: " + str(i.estado_actual))
+            print("empresa del proyecto: " + str(i.empresa))
+            print("gerente del proyecto: " + str(i.gerente))
+            print("equipo del proyecto: " + str(i.equipo))
+            if self.verificar_tareas_proyecto(i) == False:
+                print(f"Porcentaje de completado de las tareas: {contador * 100 / largo}")
+            print("")
+
+    def listar_subtareas(self, id_proyecto, id_tarea):
+        proyecto = self.lista_proyectos[id_proyecto - 1]
+        tareas = proyecto.tareas
+        tarea_actual = tareas.obtener_valor_por_id(id_tarea)
+
+        if tarea_actual.subtareas.get_largo() == 0:
+            print(f"No hay subtareas en la tarea {id_tarea}")
+            return
         
+        for i in range(tarea_actual.subtareas.get_largo()):
+            subtarea_actual = tarea_actual.subtareas.obtener_valor_en_indice(i)
+
+            print(f'Identificador: {subtarea_actual.identificador}')
+            print(f'Titulo: {subtarea_actual.titulo}')
+            print(f'Detalles: {subtarea_actual.descripcion}')
+            print(f'Condicion: {subtarea_actual.condicion}')
+            print("")
 
     def listar_tareas_id(self, id_proyecto):
         proyecto = self.lista_proyectos[id_proyecto - 1]

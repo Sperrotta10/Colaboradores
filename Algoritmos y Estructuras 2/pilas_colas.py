@@ -69,6 +69,17 @@ class Pila:
         if nodo is not None:
             print(nodo.valor)
             self._recorrer_aux(nodo.siguiente)
+
+    def obtener_valor_por_id(self, id):
+        nodo_actual = self.tope
+        
+        while nodo_actual is not None:
+            if nodo_actual.valor.id == id:
+                return nodo_actual.valor
+            nodo_actual = nodo_actual.siguiente
+        
+        print(f"No se encontró ningún nodo con el nombre '{id}' en la pila.")
+        return None
     
     def obtener_valor_en_indice(self, indice):
         nodo_actual = self.tope
@@ -148,6 +159,17 @@ class Cola:
             while actual:
                 print(actual.valor)
                 actual = actual.siguiente
+
+    def obtener_valor_por_id(self, id):
+        nodo_actual = self.tope
+        
+        while nodo_actual is not None:
+            if nodo_actual.valor.id == id:
+                return nodo_actual.valor
+            nodo_actual = nodo_actual.siguiente
+        
+        print(f"No se encontró ningún nodo con el nombre '{id}' en la pila.")
+        return None
     
     def obtener_valor_en_indice(self, indice):
         if self.esta_vacia():
