@@ -24,7 +24,7 @@ while True:
         lista_proyectos = proyecto.get_lista_proyectos()
 
     elif opc == 2:
-        Gestion_Tareas_prioridades()
+        Gestion_Tareas_prioridades(lista_proyectos)
         print("Hola 2")
     elif opc == 3:
         print("Hola 3")

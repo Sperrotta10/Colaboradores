@@ -129,12 +129,12 @@ class Gestion_proyectos:
     def crear_proyecto(self):
         pregunta = input("Desea ingresar los datos manualmente o de forma automática? (M/A) ")
 
-        with open("proyectos.txt", "a") as archivo:  # Abrir archivo en modo de anexado
+        with open("proyectos.txt", "a") as archivo:  #abrir archivo en modo de anexado
             if pregunta.lower() == "m":
                 cant_proyectos = int(input("Cuantos proyectos deseas crear: "))
 
                 for i in range(cant_proyectos):
-                    # Pedimos el ingreso de datos de forma manual
+                    #se pide el ingreso de datos de forma manual
                     id = int(input("Indique el id del proyecto: "))
                     nombre = input("Indique el nombre del proyecto: ")
                     descripcion = input("Indique los detalles del proyecto: ")
@@ -343,7 +343,7 @@ class Gestion_Tareas_prioridades:
             opc = input("Escoje la opcion que desea ejecutar: ")
 
             if int(opc) == 1:
-                self.crear_proyecto(num)
+                self.agregar_tareas_al_final(num)
                 
             elif int(opc) == 2:
                 self.modificar_proyecto()
@@ -367,38 +367,76 @@ class Gestion_Tareas_prioridades:
             return False            
 
     def agregar_tareas_al_final(self, id):
-        
-        if len(self.lista_proyectos) != 0:
-            i = 0
-            #pila_tareas = pilas.Pila()
-            with open("datos_prueba_proyecto.json", "r") as archivo:
-                datos = json.load(archivo)
-                for proyecto_data in datos["proyectos"]:
-                    for tarea_data in proyecto_data["tareas"]:
-                        tarea = Tareas(
-                            tarea_data["identificador"],
-                            tarea_data["titulo"],
-                            tarea_data["cliente"],
-                            tarea_data["detalles"],
-                            datetime.strptime(tarea_data["inicio"], "%Y-%m-%d"),
-                            datetime.strptime(tarea_data["vencimiento"], "%Y-%m-%d"),
-                            tarea_data["condicion"],
-                            tarea_data["avance"]
-                        )
-                        for subtarea_data in tarea_data.get("subtareas", []):
-                            subtarea = Subtarea(
-                                subtarea_data["identificador"],
-                                subtarea_data["titulo"],
-                                subtarea_data["detalles"],
-                                subtarea_data["condicion"]
-                            )
-                            tarea.agregar_subtarea(subtarea)
+        print(self.lista_proyectos[id].nombre)
+        pregunta = input("Desea ingresar los datos manualmente o de forma automática? (M/A) ")
+        if pregunta.lower() == "m":
+            titulo = input("Indique el titulo de la tarea: ")
+            cliente = input("Indique el cliente de la tarea: ")
+            detalles = input("Indique detalles de la tarea: ")
+            dia1 = int(input("Indique el dia de inicio: "))
+            mes1 = int(input("Indique el mes de inicio: "))
+            anio1 = int(input("Indique el año de inicio: "))
+            fecha_inicio = datetime(anio1, mes1, dia1)
+            dia2 = int(input("Indique el dia de vencimiento: "))
+            mes2 = int(input("Indique el mes de vencimiento: "))
+            anio2 = int(input("Indique el año de vencimiento: "))
+            fecha_vencimiento = datetime(anio2, mes2, dia2)
+            condicion = input("Indique su condición: ")
+            avance = int(input("Indique su avance: "))
 
-                        #pila_tareas.agregar(tarea)
-                        self.lista_proyectos[i].agregar_tareas(tarea)
-                    i += 1
+            tarea = Tareas(titulo, cliente, detalles, fecha_inicio, fecha_vencimiento, condicion, avance)
+            self.lista_proyectos[id].agregar_tareas(tarea)
+
+            # Escribir en archivo
+            with open("tareas.txt", "a") as archivo:
+                archivo.write(f"proyecto id: {id + 1}{{\n")
+                archivo.write("    Tareas:\n\n")
+                archivo.write(f"    id = {tarea.id}\n")
+                archivo.write(f"    titulo = {tarea.nombre}\n")
+                archivo.write(f"    cliente = {tarea.cliente}\n")
+                archivo.write(f"    detalles = {tarea.descripcion}\n")
+                archivo.write(f"    fecha_inicio = {fecha_inicio.strftime('%Y-%m-%d')}\n")
+                archivo.write(f"    fecha_vencimiento = {fecha_vencimiento.strftime('%Y-%m-%d')}\n")
+                archivo.write(f"    condicion = {tarea.estado_actual}\n")
+                archivo.write(f"    avance = {tarea.porcentaje}\n")
+                archivo.write("}\n\n")
+
         else:
-            print("No hay proyectos disponibles")
+            if len(self.lista_proyectos) != 0:
+                with open("tareas.txt", "a") as archivo:
+                    with open("datos_prueba_proyecto.json", "r") as archivo_json:
+                        datos = json.load(archivo_json)
+                        proyecto_data = datos["proyectos"][id - 1]  # Restamos 1 para ajustarnos al índice de Python (comienza en 0)
+                        archivo.write(f"proyecto id: {id}{{\n")
+                        archivo.write("    Tareas:\n\n")
+                        for tarea_data in proyecto_data["tareas"]:
+                            tarea = Tareas(
+                                tarea_data["identificador"],
+                                tarea_data["titulo"],
+                                tarea_data["cliente"],
+                                tarea_data["detalles"],
+                                datetime.strptime(tarea_data["inicio"], "%Y-%m-%d"),
+                                datetime.strptime(tarea_data["vencimiento"], "%Y-%m-%d"),
+                                tarea_data["condicion"],
+                                tarea_data["avance"]
+                            )
+                            self.lista_proyectos[id - 1].agregar_tareas(tarea)
+                            # Escribir en archivo
+                            
+                            archivo.write(f"    id = {tarea.nombre}\n")
+                            archivo.write(f"    titulo = {tarea.nombre}\n")
+                            archivo.write(f"    cliente = {tarea.cliente}\n")
+                            archivo.write(f"    detalles = {tarea.descripcion}\n")
+                            archivo.write(f"    fecha_inicio = {tarea.fecha_de_inicio.strftime('%Y-%m-%d')}\n")
+                            archivo.write(f"    fecha_vencimiento = {tarea.fecha_de_vencimiento.strftime('%Y-%m-%d')}\n")
+                            archivo.write(f"    condicion = {tarea.estado_actual}\n")
+                            archivo.write(f"    avance = {tarea.porcentaje}\n")
+                            archivo.write(f"\n")
+                        archivo.write("}\n\n")
+            else:
+                print("No hay proyectos disponibles")
+
+
 
     def insertar_tareas_posicion(self):
 
@@ -551,6 +589,7 @@ class Gestion_Tareas_prioridades:
 # ================================== TAREAS PENDIENTES A REALIZAR ==========================================
 
 """
+
 1- falta la parte de pilas y colas de segundo modulo
 2- Modulo de Reportes
 3- Probar Funcionamiento
