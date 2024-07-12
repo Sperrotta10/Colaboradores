@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "proyecto_id": 1,
+        "fecha_inicio": "2023-01-01",
+        "fecha_fin": "2023-01-31",
+        "tareas": [1]
+    },
+    {
+        "id": 2,
+        "proyecto_id": 2,
+        "fecha_inicio": "2023-02-01",
+        "fecha_fin": "2023-02-28",
+        "tareas": [2]
+    }
+]

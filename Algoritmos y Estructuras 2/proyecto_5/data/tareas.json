@@ -1,0 +1,24 @@
+[
+    {
+        "id": 1,
+        "nombre": "Tarea 1",
+        "empresa_cliente": 1,
+        "descripcion": "Descripcion Tarea 1",
+        "fecha_inicio": "2023-01-01",
+        "fecha_vencimiento": "2023-01-15",
+        "estado_actual": "Pendiente",
+        "porcentaje": 50,
+        "padre_id": null
+    },
+    {
+        "id": 2,
+        "nombre": "Subtarea 1.1",
+        "empresa_cliente": 1,
+        "descripcion": "Descripcion Subtarea 1.1",
+        "fecha_inicio": "2023-01-05",
+        "fecha_vencimiento": "2023-01-10",
+        "estado_actual": "Completada",
+        "porcentaje": 100,
+        "padre_id": 1
+    }
+]
