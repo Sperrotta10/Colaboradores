@@ -1,0 +1,40 @@
+{
+    "proyectos" : [
+        {
+            "id": 1, 
+            "nombre": "Proyecto 1", 
+            "descripcion": "Descripcion Proyecto 1", 
+            "fecha_inicio": "2023-01-01", 
+            "fecha_vencimiento": "2023-06-01", 
+            "estado_actual": "En Progreso", 
+            "empresa": 1, 
+            "gerente": "gerente1", 
+            "equipo": ["integrante1", "integrante2"], 
+            "tareas": []
+        }, 
+        {
+            "id": 3, 
+            "nombre": "Proyecto 3", 
+            "descripcion": "descripcion 3", 
+            "fecha_inicio": "2023-05-12", 
+            "fecha_vencimiento": "2023-05-28", 
+            "estado_actual": "En progreso", 
+            "empresa": "3", 
+            "gerente": "gerente 3", 
+            "equipo": ["Integrante1", "Integrante2"], 
+            "tareas": []
+        }, 
+        {
+            "id": 2, 
+            "nombre": "Proyecto 2", 
+            "descripcion": "Descripcion Proyecto 2",
+            "fecha_inicio": "2023-02-01", 
+            "fecha_vencimiento": "2023-07-01", 
+            "estado_actual": "Completado", 
+            "empresa": 2, 
+            "gerente": "gerente2", 
+            "equipo": ["integrante1", "integrante2"], 
+            "tareas": []
+        }
+    ]
+}

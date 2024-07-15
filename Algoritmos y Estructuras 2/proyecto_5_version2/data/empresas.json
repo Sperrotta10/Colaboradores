@@ -1,0 +1,46 @@
+{
+  "empresas": [
+    {
+      "id": 1,
+      "nombre": "Empresa A",
+      "descripcion": "Descripcion Proyecto 1",
+      "fecha_creacion": "2023-02-24",
+      "direccion": "Direccion A",
+      "telefono": "818277271",
+      "correo": "empresaA@example.com",
+      "gerente": "gerente1",
+      "equipo_contacto": [
+        "integrante1",
+        "integrante2"
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "Integrante2",
+      "descripcion": "descripcion B1",
+      "fecha_creacion": "2023-04-24",
+      "direccion": "direccion de la empresa B1",
+      "telefono": "2737632",
+      "correo": "empresaB1@outlook.com",
+      "gerente": "gerente B1",
+      "equipo_contacto": [
+        "integrante1",
+        "integrante2"
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Integrante2",
+      "descripcion": "descripcion de la empresa C",
+      "fecha_creacion": "2023-09-22",
+      "direccion": "direccion de la empresa C",
+      "telefono": "177227",
+      "correo": "empresaC@hotmail.com",
+      "gerente": "gerenteC",
+      "equipo_contacto": [
+        "Integrante1",
+        "Integrante2"
+      ]
+    }
+  ]
+}

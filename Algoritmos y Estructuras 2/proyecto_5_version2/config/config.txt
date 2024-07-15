@@ -1,0 +1,4 @@
+empresas =../data/empresas.json
+proyectos =../data/proyectos.json
+tareas =../data/tareas.json
+sprints =../data/sprints.json
