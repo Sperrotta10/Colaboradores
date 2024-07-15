@@ -8,8 +8,7 @@
             "fecha_inicio": "2023-01-01",
             "fecha_vencimiento": "2023-01-15",
             "estado_actual": "Pendiente",
-            "porcentaje": 50,
-            "padre_id": null
+            "porcentaje": 50
         },
         {
             "id": 2,
@@ -19,8 +18,7 @@
             "fecha_inicio": "2023-01-05",
             "fecha_vencimiento": "2023-01-10",
             "estado_actual": "Completada",
-            "porcentaje": 100,
-            "padre_id": 1
+            "porcentaje": 100
         }
     ]
 }
