@@ -63,7 +63,7 @@ class NarioArbol:
 
 
 class Tarea:
-    def __init__(self, id, nombre, empresa_cliente, descripcion, fecha_inicio, fecha_vencimiento, estado_actual, porcentaje):
+    def __init__(self, id, nombre, empresa_cliente, descripcion, fecha_inicio, fecha_vencimiento, estado_actual, porcentaje, subtareas = []):
         self.id = id
         self.nombre = nombre
         self.empresa_cliente = empresa_cliente
@@ -72,7 +72,7 @@ class Tarea:
         self.fecha_vencimiento = datetime.strptime(fecha_vencimiento, '%Y-%m-%d')
         self.estado_actual = estado_actual
         self.porcentaje = porcentaje
-        self.subtareas = []
+        self.subtareas = subtareas
 
     def agregar_subtareas(self,subtarea):
         self.subtareas.append(subtarea)
@@ -177,13 +177,28 @@ class GestionTareas:
 
 
     def guardar_proyectos(self):
+        data = {'proyectos': []}
         proyectos = self.arbol_nario.listar(self.arbol_nario.root)
-        data = [vars(proyecto) for proyecto in proyectos]
-        for proyecto in data:
-            proyecto['tareas'] = [vars(tarea) for tarea in proyecto['tareas']]
-            for tarea in proyecto['tareas']:
+        for proyecto in proyectos:
+            proyecto_data = {
+                'id': proyecto.id,
+                'nombre': proyecto.nombre,
+                'descripcion': proyecto.descripcion,
+                'fecha_inicio': proyecto.fecha_inicio.strftime('%Y-%m-%d'),
+                'fecha_vencimiento': proyecto.fecha_vencimiento.strftime('%Y-%m-%d'),
+                'estado_actual': proyecto.estado_actual,
+                'empresa': proyecto.empresa,
+                'gerente': proyecto.gerente,
+                'equipo': proyecto.equipo,
+                'tareas': [vars(tarea) for tarea in proyecto.tareas]
+            }
+            for tarea in proyecto_data['tareas']:
                 tarea['subtareas'] = [vars(subtarea) for subtarea in tarea['subtareas']]
-        with open(self.file_path, 'w') as file:
-            json.dump(data, file, default=str)
+            data['proyectos'].append(proyecto_data)
 
+        try:
+            with open(self.file_path, 'w') as jsonfile:
+                json.dump(data, jsonfile, indent=2)
+        except IOError:
+            print(f"Error al guardar el archivo JSON: {self.file_path}")
 

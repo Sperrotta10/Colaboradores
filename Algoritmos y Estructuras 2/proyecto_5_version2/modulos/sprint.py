@@ -161,9 +161,22 @@ class GestionSprints:
 
 
     def guardar_sprints(self):
+        data = {'sprints': []}
         sprints = self.arbol_avl.pre_order(self.root)
-        data = [vars(sprint) for sprint in sprints]
-        with open(self.file_path, 'w') as file:
-            json.dump(data, file, default=str)
+        for sprint in sprints:
+            sprint_data = {
+                'id': sprint.id,
+                'proyecto_id': sprint.proyecto_id,
+                'fecha_inicio': sprint.fecha_inicio.strftime('%Y-%m-%d'),
+                'fecha_fin': sprint.fecha_fin.strftime('%Y-%m-%d'),
+                'tareas': [vars(tarea) for tarea in sprint.tareas]
+            }
+            data['sprints'].append(sprint_data)
+
+        try:
+            with open(self.file_path, 'w') as jsonfile:
+                json.dump(data, jsonfile, indent=2)
+        except IOError:
+            print(f"Error al guardar el archivo JSON: {self.file_path}")
 
 

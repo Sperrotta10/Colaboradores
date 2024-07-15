@@ -56,7 +56,7 @@ class ListaEnlazada:
 
 
 class Empresa:
-    def __init__(self, id, nombre, descripcion, fecha_creacion, direccion, telefono, correo, gerente, equipo_contacto):
+    def __init__(self, id, nombre, descripcion, fecha_creacion, direccion, telefono, correo, gerente, equipo_contacto, proyectos = []):
         self.id = id
         self.nombre = nombre
         self.descripcion = descripcion
@@ -66,7 +66,7 @@ class Empresa:
         self.correo = correo
         self.gerente = gerente
         self.equipo_contacto = equipo_contacto
-        self.proyectos = []
+        self.proyectos = proyectos
 
     def agregar_proyectos(self, proyecto):
         self.proyectos.append(proyecto) 
